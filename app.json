@@ -1,0 +1,34 @@
+{
+  "expo": {
+    "name": "PetWorldCustomer",
+    "slug": "petworldcustomer",
+    "privacy": "public",
+    "sdkVersion": "35.0.0",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "version": "1.3.0",
+    "orientation": "portrait",
+    "icon": "./assets/imgs/logo.png",
+    "splash": {
+      "image": "./assets/imgs/loading.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#33333"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "googleServicesFile": "./google-services.json",
+      "package": "com.petapp"
+    },
+    "description": "PetWorld platform for customers to book services and manage their pets"
+  }
+}
