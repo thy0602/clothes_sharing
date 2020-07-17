@@ -14,13 +14,11 @@ import MyProfile from "../screens/MyProfile";
 import Login from "../screens/Login";
 import Register from "../screens/Register";
 import ForgetPassword from "../screens/ForgetPassword"
-import Booking from "../screens/Booking"
-import AddPet from "../screens/AddPet";
-import PetProfile from "../screens/PetProfile";
+import Events from "../screens/Events"
+import AddProducts from "../screens/AddProducts";
+import ClothesDetails from "../screens/ClothesDetails";
 import ChangePassword from "../screens/ChangePassword";
-import Notification from "../screens/Notification";
-import PetBooking from "../screens/PetBooking";
-import BookingDetails from "../screens/BookingDetails";
+import Activities from "../screens/Activities";
 import EventDetails from "../screens/EventDetails";
 import Chat from "../screens/Chat";
 const { width, height } = Dimensions.get('screen');
@@ -30,27 +28,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 // import { createDrawerNavigator } from 'react-navigation-drawer';
 // import { createDrawerNavigator } from '@react-navigation/drawer';
 
-const PetProfileStack = createStackNavigator(
-  {
-    PetProfile: {
-      screen: PetProfile,
-      navigationOptions: {
-        header: null,
-      }
-    },
-    PetBooking: {
-      screen: PetBooking,
-      navigationOptions: {
-        header: null,
-      }
-    }
-  },
-  {
-    transitionConfig: () => {
-        return fromRight(1000);
-    }
-  }
-);
 
 
 const HomeStack = createStackNavigator(
@@ -61,14 +38,8 @@ const HomeStack = createStackNavigator(
         header: null
       }
     },
-    // AddPet: {
-    //   screen: AddPet,
-    //   navigationOptions:{
-    //     header: null
-    //   }
-    // },
-    PetProfile: {
-      screen: PetProfile,
+    ClothesDetails: {
+      screen: ClothesDetails,
       navigationOptions:{
         header: null
       }
@@ -79,18 +50,6 @@ const HomeStack = createStackNavigator(
         header: null
       }
     },
-    // PetBooking: {
-    //   screen: PetBooking,
-    //   navigationOptions: {
-    //     header: null
-    //   }
-    // },
-    // BookingDetails: {
-    //   screen: BookingDetails,
-    //   navigationOptions: {
-    //     header: null
-    //   }
-    // },
   },
   {
     transitionConfig: () => {
@@ -99,10 +58,10 @@ const HomeStack = createStackNavigator(
   }
 );
 
-const BookingStack = createStackNavigator(
+const EventsStack = createStackNavigator(
   {
-    Booking: {
-      screen: Booking,
+    Events: {
+      screen: Events,
       navigationOptions: {
         header: null,
       }
@@ -143,16 +102,16 @@ const ProfileStack = createStackNavigator(
   }
 );
 
-const NotificationStack = createStackNavigator(
+const ActivitiesStack = createStackNavigator(
   {
-    Notification: {
-      screen: Notification,
+    Activities: {
+      screen: Activities,
       navigationOptions: {
         header: null,
       }
     },
-    AddPet: {
-      screen: AddPet,
+    AddProducts: {
+      screen: AddProducts,
       navigationOptions:{
         header: null
       }
@@ -168,8 +127,8 @@ const NotificationStack = createStackNavigator(
 const HomeTab = createBottomTabNavigator(
   {
     Home: HomeStack,
-    Events: BookingStack,
-    Activities: NotificationStack,
+    Events: EventsStack,
+    Activities: ActivitiesStack,
     Profile: ProfileStack
   },
   {

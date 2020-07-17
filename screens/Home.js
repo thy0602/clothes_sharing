@@ -42,125 +42,11 @@ class Home extends React.Component {
 
   constructor(props) {
     super(props);
-    this.petAPI = new PetAPI();
-    this.authAPI = new AuthAPI();
-    this.retrieveData = this.retrieveData.bind(this);
   }
 
-  componentDidMount() {
-    this.didFocus = this.props.navigation.addListener('willFocus', () => {
-      this.setState({ loading: true }, () => {
-        this.retrieveData();
-      })
-    })
 
-  }
-
-  componentWillUnmount() {
-    this.didFocus.remove();
-  }
-
-  async retrieveData() {
-    let customerId = await this.authAPI.retrieveCustomerId();
-    this.petAPI.getPetByCustomerId(customerId, (pet) => {
-      let petList = [];
-      pet.forEach(v => {
-        petList.push(v)
-      });
-      this.setState({ petList: pet }, () => {
-        this.setState({ loading: false });
-      });
-    })
-  }
-
-  goPetProfile(item){
-     this.props.navigation.navigate('PetProfile',{pet: item});  
-  }
-
-  goPetBooking(item){
-    this.props.navigation.navigate('PetBooking',{pet: item});  
- }
-
-
-
-
-  renderCard() {
-    var table = [];
-    this.state.petList.forEach((item, index) => {
-      if (index % 2 == 0 && index + 1 < this.state.petList.length) {
-        var oddItem = this.state.petList[index + 1];
-        table.push(
-          <Block key={index} style={styles.container}>
-            <Block style={{ ...styles.cardService, marginRight: 10 }} >
-              <MaterialIcons name='pets' size={50} style={styles.petIcon} />
-              <Block style={styles.buttonRow}>
-                <Button style={styles.button} onPress={() => {this.goPetProfile(item)}}>
-                  <Text bold size={12} color={"black"}>
-                    Profile
-                  </Text>
-                </Button>
-                <Button style={styles.button} onPress={() => {this.goPetBooking(item)}}>
-                  <Text bold size={12} color={"black"}>
-                    History
-                  </Text>
-                </Button>
-              </Block>
-
-              <View style={styles.cardFooter}>
-                <Text style={styles.itemTxt}>{item.name}</Text>
-              </View>
-            </Block>
-
-            <Block style={{ ...styles.cardService }}>
-              <MaterialIcons name='pets' size={50} style={styles.petIcon} />
-              <Block style={styles.buttonRow}>
-                <Button style={styles.button} onPress={() => {this.goPetProfile(oddItem)}}>
-                  <Text bold size={12} color={"black"}>
-                    Profile
-                  </Text>
-                </Button>
-                <Button style={styles.button} onPress={() => {this.goPetBooking(oddItem)}}>
-                  <Text bold size={12} color={"black"}>
-                    History
-                  </Text>
-                </Button>
-              </Block>
-
-              <View style={styles.cardFooter}>
-                <Text style={styles.itemTxt}>{oddItem.name}</Text>
-              </View>
-            </Block>
-          </Block>
-        )
-      }
-      else if (index % 2 == 0) {
-        table.push(
-          
-          <Block key={index} style={styles.container}>
-            <Block style={{ ...styles.cardService, marginRight: 10 }}>
-              <MaterialIcons name='pets' size={50} style={styles.petIcon} />
-              <Block style={styles.buttonRow}>
-                <Button style={styles.button} onPress={() => {this.goPetProfile(item)}}>
-                  <Text bold size={12} color={"black"}>
-                    Profile
-                  </Text>
-                </Button>
-                <Button style={styles.button} onPress={() => {this.goPetBooking(item)}}>
-                  <Text bold size={12} color={"black"}>
-                    History
-                  </Text>
-                </Button>
-              </Block>
-              {/* <Text style={styles.priceTxt}>{item.animal}</Text> */}
-              <View style={styles.cardFooter}>
-                <Text style={styles.itemTxt}>{item.name}</Text>
-              </View>
-            </Block>
-          </Block>
-        )
-      }
-    })
-    return table
+  goClothesDetails(item){
+    this.props.navigation.navigate('ClothesDetails',{pet: item});  
   }
 
   render() {
@@ -172,7 +58,7 @@ class Home extends React.Component {
 
     return (
       <Block flex>
-        {loader}
+        {/* {loader} */}
 
         <ImageBackground source={require("../assets/imgs/headerBooking.png")} resizeMode='stretch' style={styles.headerImage}>
           <View style={styles.textHeader}>
@@ -183,7 +69,7 @@ class Home extends React.Component {
         </ImageBackground>
 
         <ScrollView style={{ flex: 1, width: width}}>
-          <TouchableOpacity onPress={() => {this.goPetProfile("item")}}>
+          <TouchableOpacity onPress={() => {this.goClothesDetails("item")}}>
             <Block flex style={{ marginTop: 10, marginBottom: 10, width: 0.7*width, alignSelf: 'center'}}>
               <CustomizedCard 
                 imageSrc={require("../assets/imgs/white-dress.jpg")}
@@ -198,7 +84,7 @@ class Home extends React.Component {
           </TouchableOpacity>
           
 
-          <TouchableOpacity onPress={() => {this.goPetProfile("item")}}>
+          <TouchableOpacity onPress={() => {this.goClothesDetails("item")}}>
             <Block flex style={{ marginTop: 10, marginBottom: 10, width: 0.7*width, alignSelf: 'center'}}>
               <CustomizedCard 
                 imageSrc={require("../assets/imgs/white-dress.jpg")}
