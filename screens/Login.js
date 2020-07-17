@@ -9,7 +9,7 @@ import {
   Keyboard,
   Alert
 } from "react-native";
-import { Block, Checkbox, Text, theme } from "galio-framework";
+import { Block, Checkbox, Text, theme/*, Input*/ } from "galio-framework";
 
 import {
   Button,
@@ -80,11 +80,11 @@ class Login extends React.Component {
       <Block flex middle >
         {/* <StatusBar hidden /> */}
 
-        <ImageBackground
+        {/* <ImageBackground
           // source={Images.GalaxyBackground} //Images.RegisterBackground
           source={require("../assets/imgs/background2.gif")}
           style={{ width, height, zIndex: 1 }}
-        >
+        > */}
           {loader}
           <Block flex={0.62} middle>
             {/* <Block flex={1} top={true} style={{justifyContent:'flex-start'}}> */}
@@ -108,13 +108,13 @@ class Login extends React.Component {
                 keyboardVerticalOffset={200}
               >
                 <ScrollView style={{ width: width }}>
-                  <Block flex={0.15}>
+                  {/* <Block flex={0.15}>
                     <Text color="#E1E1E1" size={30} style={{ marginLeft: 15, fontWeight: 'bold' }}>
                       Welcome to PetWorld
                     </Text>
-                  </Block>
+                  </Block> */}
 
-                  <Block center width={width * 0.9} style={{ marginBottom: 15 }}>
+                  <Block center width={width * 0.9} style={{ marginTop: 20, marginBottom: 15 }}>
                     <Input
                       borderless
                       placeholder="Email"
@@ -123,13 +123,14 @@ class Login extends React.Component {
                       iconContent={
                         <Icon
                           size={16}
-                          color={'white'}
+                          color={'grey'}
                           name="ic_mail_24px"
                           family="ArgonExtra"
                           style={styles.inputIcons}
                         />
                       }
-                      style={{ backgroundColor: '#333333' }}
+                      //style={{ backgroundColor: '#333333' }}
+                      style={{ backgroundColor: 'rgba(214, 214, 214, 0.8)' }}
                     />
                   </Block>
                   <Block center width={width * 0.9}>
@@ -144,13 +145,14 @@ class Login extends React.Component {
                         <Icon
                           size={16}
                           //color={argonTheme.COLORS.ICON}
-                          color={'white'}
+                          color={'grey'}
                           name="padlock-unlocked"
                           family="ArgonExtra"
                           style={styles.inputIcons}
                         />
                       }
-                      style={{ backgroundColor: '#333333' }}
+                      // style={{ backgroundColor: '#333333' }}
+                      style={{ backgroundColor: 'rgba(214, 214, 214, 0.8)' }}
                     />
                   </Block>
                   <TouchableOpacity onPress={() => navigation.navigate("ForgetPassword")}>
@@ -183,7 +185,7 @@ class Login extends React.Component {
             </Block>
           </Block>
 
-        </ImageBackground>
+        {/* </ImageBackground> */}
       </Block>
     );
   }

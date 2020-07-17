@@ -38,19 +38,6 @@ export default class PetProfile extends React.Component {
   constructor() {
     super()
     this.state = {
-      //name: "",
-      species: "",
-      breed: "",
-      weight: "",
-      height: "",
-      date: "",
-      successDialogVisible: false,
-      edit: false,
-      popUpDialog: false,
-      petId: "",
-      pet: null,
-      message: "",
-
       name: "",
       size: "",
       height: "",
@@ -63,11 +50,6 @@ export default class PetProfile extends React.Component {
 
       starCount: 0
     };
-    this.authAPI = new AuthAPI();
-    this.petAPI = new PetAPI();
-    this.retrieveData = this.retrieveData.bind(this);
-    this.deletePet = this.deletePet.bind(this);
-    this.pet = new Object();
   }
 
   
@@ -91,13 +73,15 @@ export default class PetProfile extends React.Component {
     )
   }
 
-  goChat() {}
+
+  goChat() {
+    this.props.navigation.navigate('Chat');  
+  }
 
   componentDidMount() {
     // BackgroundColor.setColor("#CFCFCF");
     this.didFocus = this.props.navigation.addListener('willFocus', () => {
       this.setState({ loading: true }, () => {
-        this.retrieveData();
         this.setData();
       })
     })
@@ -123,158 +107,8 @@ export default class PetProfile extends React.Component {
     })
   }
 
-  retrieveData() {
-    const pet = this.props.navigation.state.params.pet;
-
-    var date = new Date(pet.dateOfBirth);
-    const offset = date.getTimezoneOffset();
-    date = new Date(date.getTime() - (offset * 60 * 1000));
-    var dateString = date.toISOString().split("T")[0];
-
-    this.setState({
-      petId: pet._id,
-      name: pet.name,
-      species: pet.species,
-      breed: pet.breed,
-      weight: pet.weight.toString(),
-      height: pet.height.toString(),
-      date: dateString,
-      loading: false,
-    })
-  }
-
-  UpdatePetProfile = async () => {
-    if (!this.validateInput()) {
-      return;
-    }
-
-    let customerId = await this.authAPI.retrieveCustomerId();
-
-    const { date } = this.state;
-    var d = date.split('-');
-    var mydate = new Date(parseInt(d[0]), parseInt(d[1]) - 1, parseInt(d[2]), 0, 0, 0, 0);
-
-    let pet = new Object({
-      _id: this.state.petId,
-      name: this.state.name,
-      weight: parseFloat(this.state.weight).toFixed(1),
-      height: parseFloat(this.state.height).toFixed(1),
-      species: this.state.species,
-      breed: this.state.breed,
-      customerId: customerId,
-      dateOfBirth: mydate
-    })
-
-    this.petAPI.updatePetById(pet, (res) => {
-      if (res) {
-        this.setState({
-          message: "Updated successfully!",
-          successDialogVisible: true,
-        });
-        setTimeout(() => {
-          this.setState({
-            successDialogVisible: false,
-          });
-          this.props.navigation.goBack();
-        }, 2000);
-      }
-      else {
-        Alert.alert('Error', "Server error",
-          [{ text: 'Ok' }])
-      }
-    })
-
-  }
-
-  validateInput() {
-    var str = "";
-    if (!this.state.name)
-      str += "name";
-    if (!this.state.species) {
-      if (str == "")
-        str += "species";
-      else
-        str += ", species";
-    }
-    if (!this.state.weight) {
-      if (str == "")
-        str += "weight";
-      else
-        str += ", weight";
-    }
-    if (!this.state.height) {
-      if (str == "")
-        str += "height";
-      else
-        str += ", height";
-    }
-    if (!this.state.date) {
-      if (str == "")
-        str += "date of birth";
-      else
-        str += ", date of birth";
-    }
-    if (str != "") {
-      Alert.alert('Error', "Input field can not be empty: " + str,
-        [{ text: 'OK' }])
-      return false;
-    }
-    return true;
-  }
-
-  deletePet(petId) {
-    Alert.alert(
-      'Delete Pet',
-      'Are you sure to delete this pet?',
-      [
-        { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-        {
-          text: 'OK', onPress: () => {
-            this.petAPI.deletePetByPetId(petId, (res) => {
-              if (res) {
-                this.setState({
-                  message: "Deleted successfully!",
-                  successDialogVisible: true,
-                });
-                setTimeout(() => {
-                  this.setState({
-                    successDialogVisible: false,
-                  });
-                  this.props.navigation.goBack();
-                }, 2000);
-              }
-              else {
-                Alert.alert('Error', "Server error",
-                  [{ text: 'Ok' }])
-              }
-            })
-          }
-        },
-      ],
-      { cancelable: false }
-    )
-  }
-
-  get imageSource() {
-    switch (this.state.species) {
-      case "cat":
-        return require('../assets/imgs/cat.png');
-      case "dog":
-        return require('../assets/imgs/dog.png');
-      case "bird":
-        return require('../assets/imgs/bird.png');
-      default:
-        return null
-    }
-  }
   render() {
 
-    if (this.state.species) {
-      var img = <Image resizeMode='contain' source={this.imageSource} style={styles.imgPet} />
-    }
-    else {
-      img = null
-    }
 
     return (
       <Block flex>
@@ -285,12 +119,125 @@ export default class PetProfile extends React.Component {
           </Block>
           <View style={styles.textHeader}>
             <Text color="#ffffff" size={30} style={{ fontFamily: 'ITCKRIST' }} >
-              Pet Profile
+              Clothes Details
             </Text>
           </View>
         </ImageBackground>
 
-        <ScrollView style={{ flex: 1, width: width, marginTop: 10}}>
+        
+        <ScrollView style={{ marginBottom: 15 }}>
+          <Block flex={1} style={styles.imageBlock}>
+            <ImageBackground source={imageCLothes} resizeMode='stretch' style={styles.clothesImage}> 
+              </ImageBackground>
+          </Block>
+
+          <View style = {{borderWidth: 0.5, borderColor:'green', marginLeft:50, marginRight:50, marginBottom: 10 }} />
+
+            <Block flex={1} style={styles.booking}>
+              <Text style={styles.headerTxt}>Clothes info</Text>
+                <View style={styles.detailInfo}>
+                  <View style={styles.row}>
+                    <Text style={styles.field}>Name:
+                        <Text style={styles.value}> {nameItem}</Text>
+                    </Text>
+                  </View>
+
+                  <View style={styles.row}>
+                    <Text style={styles.field}>Size:
+                        <Text style={styles.value}> {sizeItem}</Text>
+                    </Text>
+                  </View>
+
+                  <View style={styles.row}>
+                    <Text style={styles.field}>Height:
+                        <Text style={styles.value}> {heightItem} </Text>
+                    </Text>
+                  </View>
+
+                  <View style={styles.row}>
+                    <Text style={styles.field}>Weight:
+                        <Text style={styles.value}> {weightItem} </Text>
+                    </Text>
+                  </View>
+
+                  <View style={styles.row}>
+                    <Text style={styles.field}>Used Time:
+                          <Text style={styles.value}> {usedTimeItem}</Text>
+                    </Text>
+                  </View>
+
+                  <View style={styles.row}>
+                    <Text style={styles.field}>Price:
+                          <Text style={styles.value}> {priceItem}</Text>
+                    </Text>
+                  </View>
+                </View>
+
+              <Text style={styles.headerTxt}>Customer info</Text>
+              <View style={styles.detailInfo}>
+                <View style={styles.row}>
+                  <Text style={styles.field}>Name:
+                      <Text style={styles.value}> {nameSellerItem}</Text>
+                  </Text>
+                </View>
+
+                <View style={styles.row}>
+                  <Text style={styles.field}>Phone number:
+                      <Text style={styles.value}> {phoneSellerItem}</Text>
+                  </Text>
+                </View>
+
+                <View style={styles.row}>
+                  <Text style={styles.field}>Address:
+                      <Text style={styles.value}> {addressSellerItem}</Text>
+                  </Text>
+                </View>
+
+                <Text> {'\n'} </Text>
+              </View>
+            </Block>
+
+            <View style = {{borderWidth: 0.5, borderColor:'green', marginLeft:50, marginRight:50, marginBottom: 10 }} />
+          
+            <Text style={{
+                color: '#363636', 
+                fontSize: 17, 
+                fontWeight: "bold", 
+                marginBottom: 5, 
+                alignSelf: 'center'}}> 
+                Review
+            </Text>
+          
+            <View style={{alignItems: 'center'}}>
+              <StarRating
+                name="small-rating" 
+                caption="Small!"
+                disabled={true}
+                maxStars={5}
+                rating={this.state.starCount}
+                starSize={30}
+                // rating={this.state.starCount}
+                // selectedStar={(rating) => this.onStarRatingPress(rating)}
+                fullStarColor={'yellow'}
+              />
+            </View>
+
+            <Block style={styles.buttonRow}>
+              <Button style={styles.button} onPress={() => {this.addCareItem()}}>
+                <Text bold size={12} color={"black"}>
+                  Add care
+                </Text>
+              </Button>
+              <Button style={styles.button} onPress={() => {this.goChat()}}>
+                <Text bold size={12} color={"black"}>
+                  Chat
+                </Text>
+              </Button>
+            </Block>
+          </ScrollView>
+        
+
+        {/* <ScrollView style={{ flex: 1, width: width, marginTop: 10}}>
           <ImageBackground source={imageCLothes} resizeMode='stretch' style={styles.clothesImage}> 
           </ImageBackground>
 
@@ -379,7 +326,7 @@ export default class PetProfile extends React.Component {
             </Button>
           </Block>
           
-        </ScrollView>
+        </ScrollView> */}
       </Block>
     );
   }
@@ -466,7 +413,7 @@ const styles = StyleSheet.create({
     position: 'absolute'
   },
   clothesImage: {
-    width: width,
+    width: "100%",
     height: 200
   },
   inforBlock: {
@@ -489,5 +436,51 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 10,
     backgroundColor: "#a0a7fa"
+  },
+
+
+
+
+  //New
+  imageBlock: {
+    backgroundColor: "rgba(45, 45, 45, 0.95)",
+    borderRadius: 15,
+    width: "95%",
+    // paddingHorizontal: 20,
+    marginTop: 5,
+    marginBottom: 20,
+    alignSelf: 'center'
+  },
+  booking: {
+    backgroundColor: "rgba(224, 224, 224, 1)",
+    borderRadius: 15,
+    width: "95%",
+    paddingHorizontal: 20,
+    marginTop: 5,
+    marginBottom: 20,
+    alignSelf: 'center'
+  },
+  headerTxt: {
+    fontFamily: "opensans",
+    fontSize: 25,
+    textAlign: 'center',
+    marginTop: 20,
+    fontWeight: "400",
+    color: 'black',
+  },
+  row: {
+    textAlign: "left",
+    width: "100%",
+    marginTop: 10,
+  },
+  detailInfo: {
+    width: "100%",
+    left: 0
+  },
+  field: {
+    fontWeight: '500',
+    fontFamily: 'opensans',
+    fontSize: 17,
+    color: 'black'
   },
 });

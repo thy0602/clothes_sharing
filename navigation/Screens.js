@@ -21,7 +21,8 @@ import ChangePassword from "../screens/ChangePassword";
 import Notification from "../screens/Notification";
 import PetBooking from "../screens/PetBooking";
 import BookingDetails from "../screens/BookingDetails";
-import ClothesDisplay from "../screens/BookingDetails";
+import EventDetails from "../screens/EventDetails";
+import Chat from "../screens/Chat";
 const { width, height } = Dimensions.get('screen');
 // drawer
 import { MaterialIcons } from '@expo/vector-icons';
@@ -60,36 +61,36 @@ const HomeStack = createStackNavigator(
         header: null
       }
     },
-    // ClothesDisplay: {
-    //   screen: ClothesDisplay,
+    // AddPet: {
+    //   screen: AddPet,
     //   navigationOptions:{
     //     header: null
     //   }
     // },
-    AddPet: {
-      screen: AddPet,
-      navigationOptions:{
-        header: null
-      }
-    },
     PetProfile: {
       screen: PetProfile,
       navigationOptions:{
         header: null
       }
     },
-    PetBooking: {
-      screen: PetBooking,
-      navigationOptions: {
+    Chat: {
+      screen: Chat,
+      navigationOptions:{
         header: null
       }
     },
-    BookingDetails: {
-      screen: BookingDetails,
-      navigationOptions: {
-        header: null
-      }
-    },
+    // PetBooking: {
+    //   screen: PetBooking,
+    //   navigationOptions: {
+    //     header: null
+    //   }
+    // },
+    // BookingDetails: {
+    //   screen: BookingDetails,
+    //   navigationOptions: {
+    //     header: null
+    //   }
+    // },
   },
   {
     transitionConfig: () => {
@@ -104,6 +105,12 @@ const BookingStack = createStackNavigator(
       screen: Booking,
       navigationOptions: {
         header: null,
+      }
+    },
+    EventDetails: {
+      screen: EventDetails,
+      navigationOptions: {
+        header: null
       }
     },
   },
@@ -144,6 +151,12 @@ const NotificationStack = createStackNavigator(
         header: null,
       }
     },
+    AddPet: {
+      screen: AddPet,
+      navigationOptions:{
+        header: null
+      }
+    },
   },
   {
     transitionConfig: () => {
@@ -155,8 +168,8 @@ const NotificationStack = createStackNavigator(
 const HomeTab = createBottomTabNavigator(
   {
     Home: HomeStack,
-    Booking: BookingStack,
-    Notification: NotificationStack,
+    Events: BookingStack,
+    Activities: NotificationStack,
     Profile: ProfileStack
   },
   {
@@ -168,8 +181,8 @@ const HomeTab = createBottomTabNavigator(
           const name = {
             'Home': 'apps',
             'Profile': 'person',
-            'Booking': 'list',
-            'Notification': 'mail'
+            'Events': 'list',
+            'Activities': 'mail'
           }[route]
           return <MaterialIcons name={name} color={tintColor} size={22} />
         },
@@ -215,21 +228,6 @@ const LoginStack = createStackNavigator(
     }
   }
 );
-
-// const DrawerNavigator = createDrawerNavigator({
-//   Home: {
-//     screen: HomeTab,
-//     navigationOptions: {
-//       header: null,
-//     }
-//   },
-//   Account: {
-//     screen: ProfileStack,
-//     navigationOptions: {
-//       header: null,
-//     }
-//   }
-// });
 
 const AppContainer = createAppContainer(createSwitchNavigator({
   AuthLoading:{

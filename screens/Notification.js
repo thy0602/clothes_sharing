@@ -13,12 +13,15 @@ import {
 import { Block, Text, theme } from "galio-framework";
 import { argonTheme } from "../constants";
 import { Button, Icon, Input } from "../components";
-import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialIcons, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import Loader from '../components/Loader';
 import NotificationAPI from '../api/NotificationAPI'
 import AuthAPI from '../api/AuthAPI'
 import PetAPI from '../api/PetAPI'
 import VendorAPI from "../api/VendorAPI";
+
+import NotiCard from "../components/card/NotiCard";
+
 const { width, height } = Dimensions.get("screen");
 
 class Notification extends React.Component {
@@ -145,32 +148,52 @@ class Notification extends React.Component {
     }
 
     return (
-      <Block flex center style={styles.home}>
-        <ImageBackground
-          source={require("../assets/imgs/background2.gif")}
-          style={{ width, height, zIndex: 1 }}
-        >
-          {loader}
+      <Block flex /*style={styles.home}*/>
+          {/* {loader} */}
 
           <ImageBackground source={require("../assets/imgs/headerBooking.png")} resizeMode='stretch' style={styles.headerImage}>
             <View style={styles.textHeader}>
               <Text color="#ffffff" size={30} style={{fontFamily: 'ITCKRIST'}} >
-                Notification
+                Activities
               </Text>
             </View>
           </ImageBackground>
 
-          <ScrollView
-            flex={1}
-            onScroll={({ nativeEvent }) => {
-              if (isCloseToBottom(nativeEvent)) {
-                this.loadMoreData()
-              }
-            }}
-            scrollEventThrottle={400}
-            style={{ width: "100%", marginTop: 5 }}>
+          <ScrollView style={{ flex: 1, width: width}}>
+            {/* //flex={1}
+            // onScroll={({ nativeEvent }) => {
+            //   if (isCloseToBottom(nativeEvent)) {
+            //     this.loadMoreData()
+            //   }
+            // }}
+            // scrollEventThrottle={400}
+            //style={{ width: "100%", marginTop: 5 }}> */}
 
-            <Block center>
+            <Block flex style={{ marginTop: 10, marginBottom: 10, width: 0.7*width, alignSelf: 'center'}}>
+              <NotiCard 
+                //imageSrc={require("../assets/imgs/white-dress.jpg")}
+                // avatarSrc={{uri: "http://i.pravatar.cc/100?id=skater"}}
+                avatarSrc={require("../assets/imgs/off-shoulder.jpg")}
+                product="Blue Off Shoulder"
+                title="Posted"
+                caption="7h35 1-7-2020"
+                price="100,000 VND" 
+              />
+            </Block>
+
+            <Block flex style={{ marginTop: 10, marginBottom: 10, width: 0.7*width, alignSelf: 'center'}}>
+              <NotiCard 
+                //imageSrc={require("../assets/imgs/white-dress.jpg")}
+                // avatarSrc={{uri: "http://i.pravatar.cc/100?id=skater"}}
+                avatarSrc={require("../assets/imgs/off-shoulder.jpg")}
+                product="Blue Off Shoulder"
+                title="Sold"
+                caption="15h45 15-7-2020"
+                price="100,000 VND" 
+              />
+            </Block>
+
+            {/* <Block center>
               <KeyboardAvoidingView
                 style={{ flex: 1 }}
                 behavior="padding"
@@ -181,9 +204,11 @@ class Notification extends React.Component {
                 </Block>
 
               </KeyboardAvoidingView>
-            </Block>
+            </Block> */}
           </ScrollView>
-        </ImageBackground>
+
+          <Ionicons name='ios-add-circle' size={60} color='#511efa' style={styles.addIcon} 
+                    onPress={() => this.props.navigation.navigate('AddPet')}/>
       </Block>
     );
   }
@@ -197,7 +222,7 @@ const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
 const styles = StyleSheet.create({
   home: {
     width: width,
-    paddingBottom: 20
+    //paddingBottom: 20
   },
   // headerImage: {
   //   width: width,
@@ -252,7 +277,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#cccccc',
     paddingLeft: 10
-  }
+  },
+
+
+  //New
+  addIcon: {
+    alignSelf: 'flex-end',
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+  },
 });
 
 export default Notification;

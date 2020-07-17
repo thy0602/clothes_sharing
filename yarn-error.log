@@ -1,0 +1,104 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\thy\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add stream-chat-expo
+
+PATH: 
+  C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files\Java\jdk1.8.0_221\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\mingw-w64\i686-8.1.0-posix-dwarf-rt_v6-rev0\mingw32\bin;C:\Program Files\cmake-3.15.3-win64-x64\bin;C:\TDM-GCC-64\bin;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Users\thy\AppData\Local\Microsoft\WindowsApps;C:\Users\thy\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\thy\AppData\Roaming\npm
+
+Yarn version: 
+  1.22.4
+
+Node version: 
+  10.16.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/core-js/-/core-js-2.6.11.tgz: ESOCKETTIMEDOUT
+      at ClientRequest.<anonymous> (C:\Users\thy\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141375:19)
+      at Object.onceWrapper (events.js:286:20)
+      at ClientRequest.emit (events.js:198:13)
+      at TLSSocket.emitRequestTimeout (_http_client.js:662:40)
+      at Object.onceWrapper (events.js:286:20)
+      at TLSSocket.emit (events.js:198:13)
+      at TLSSocket.Socket._onTimeout (net.js:442:8)
+      at ontimeout (timers.js:436:11)
+      at tryOnTimeout (timers.js:300:5)
+      at listOnTimeout (timers.js:263:5)
+
+npm manifest: 
+  {
+    "name": "CustomerPetApp",
+    "version": "1.3.0",
+    "description": "Argon React Native, based on Argon Design System. Coded by Creative Tim",
+    "main": "node_modules/expo/AppEntry.js",
+    "scripts": {
+      "start": "expo start",
+      "android": "expo start --android",
+      "ios": "expo start --ios",
+      "eject": "expo eject"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/creativetimofficial/argon-react-native.git"
+    },
+    "dependencies": {
+      "@mapbox/polyline": "^1.1.0",
+      "@react-native-community/datetimepicker": "^2.2.3",
+      "@react-navigation/drawer": "^5.8.5",
+      "axios": "^0.19.2",
+      "expo": "^35.0.0",
+      "expo-asset": "~7.0.0",
+      "expo-cli": "^3.16.1",
+      "expo-font": "~7.0.0",
+      "expo-location": "^7.0.0",
+      "galio-framework": "^0.6.3",
+      "prop-types": "^15.7.2",
+      "react": "16.8.3",
+      "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
+      "react-native-background-color": "0.0.8",
+      "react-native-calendars": "^1.264.0",
+      "react-native-datepicker": "^1.7.2",
+      "react-native-elements": "^1.2.7",
+      "react-native-gesture-handler": "^1.3.0",
+      "react-native-image-filter-kit": "^0.7.0",
+      "react-native-image-picker": "^2.3.3",
+      "react-native-indicators": "^0.17.0",
+      "react-native-maps": "^0.25.0",
+      "react-native-modal-datetime-picker": "^8.5.1",
+      "react-native-modal-dropdown": "^0.6.2",
+      "react-native-popup-dialog": "^0.18.3",
+      "react-native-radial-gradient": "^1.0.6",
+      "react-native-reanimated": "^1.7.0",
+      "react-native-screens": "^2.0.0-beta.10",
+      "react-native-searchable-dropdown": "^1.1.1",
+      "react-native-simple-dialogs": "^1.2.1",
+      "react-native-star-rating": "^1.1.0",
+      "react-native-step-indicator": "0.0.11",
+      "react-native-vector-icons": "^6.6.0",
+      "react-native-walkthrough-tooltip": "^1.1.7",
+      "react-navigation": "^3.11.0",
+      "react-navigation-drawer": "^2.5.0",
+      "react-navigation-transitions": "^1.0.12",
+      "rn-viewpager": "^1.2.9",
+      "toggle-switch-react-native": "^2.1.0",
+      "expo-image-picker": "~7.0.0",
+      "expo-permissions": "~7.0.0"
+    },
+    "devDependencies": {
+      "babel-preset-expo": "^7.0.0"
+    },
+    "keywords": [],
+    "author": "Creative Tim <hello@creative-tim.com> (https://www.creative-tim.com/)",
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/creativetimofficial/argon-react-native/issues"
+    },
+    "homepage": "https://demos.creative-tim.com/argon-react-native"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

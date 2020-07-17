@@ -1,1 +1,1 @@
-# [Customer Pet App]
+# [Clothes Sharing]

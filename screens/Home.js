@@ -20,6 +20,8 @@ import Popup from '../components/Popup';
 import Loader from '../components/Loader';
 import { Avatar } from "react-native-elements";
 
+import CustomizedCard from "../components/card/CustomizedCard";
+
 import AuthAPI from "../api/AuthAPI";
 import PetAPI from "../api/PetAPI";
 
@@ -175,43 +177,40 @@ class Home extends React.Component {
         <ImageBackground source={require("../assets/imgs/headerBooking.png")} resizeMode='stretch' style={styles.headerImage}>
           <View style={styles.textHeader}>
           <Text color="#ffffff" size={30} style={{fontFamily: 'ITCKRIST'}} >
-              Your pets
+              Sharing Clothes
           </Text>
         </View>
         </ImageBackground>
 
         <ScrollView style={{ flex: 1, width: width}}>
-          <Block style={{height: 300, marginTop: 10}}>
-            {/* <TouchableOpacity onPress={this.goPetProfile("white-dress")}> */}
-              <Card
-                flex
-                borderless
-                style={styles.card}
-                title="Christopher Moon"
-                caption="139 minutes ago"
-                location="Los Angeles, CA"
-                avatar="http://i.pravatar.cc/100?id=skater"
-                imageStyle={styles.cardImageRadius}
-                imageBlockStyle={styles.imageBlock}
-                image= "../assets/imgs/white-dress.jpg"
+          <TouchableOpacity onPress={() => {this.goPetProfile("item")}}>
+            <Block flex style={{ marginTop: 10, marginBottom: 10, width: 0.7*width, alignSelf: 'center'}}>
+              <CustomizedCard 
+                imageSrc={require("../assets/imgs/white-dress.jpg")}
+                // avatarSrc={{uri: "http://i.pravatar.cc/100?id=skater"}}
+                avatarSrc={require("../assets/imgs/pikachu.jpg")}
+                product="White Dress"
+                title="Phạm Nguyên Minh Thy"
+                caption="2 days"
+                location="Nguyễn Trãi, HCM" 
               />
-            {/* </TouchableOpacity> */}
-          </Block>
+            </Block>
+          </TouchableOpacity>
+          
 
-          <Block style={{height: 300, marginTop: 10}}>
-            <Card
-              flex
-              borderless
-              style={styles.card}
-              title="Christopher Moon"
-              caption="139 minutes ago"
-              location="Los Angeles, CA"
-              avatar="http://i.pravatar.cc/100?id=skater"
-              imageStyle={styles.cardImageRadius}
-              imageBlockStyle={styles.imageBlock}
-              image="https://images.unsplash.com/photo-1497802176320-541c8e8de98d?&w=1600&h=900&fit=crop&crop=entropy&q=300"
-            />
-          </Block>
+          <TouchableOpacity onPress={() => {this.goPetProfile("item")}}>
+            <Block flex style={{ marginTop: 10, marginBottom: 10, width: 0.7*width, alignSelf: 'center'}}>
+              <CustomizedCard 
+                imageSrc={require("../assets/imgs/white-dress.jpg")}
+                // avatarSrc={{uri: "http://i.pravatar.cc/100?id=skater"}}
+                avatarSrc={require("../assets/imgs/pikachu.jpg")}
+                product="White Dress"
+                title="Phạm Nguyên Minh Thy"
+                caption="2 days"
+                location="Nguyễn Trãi, HCM" 
+              />
+            </Block>
+          </TouchableOpacity>
         </ScrollView>
         
       </Block>

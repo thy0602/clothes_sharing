@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
-  Alert, KeyboardAvoidingView,
-  View, StyleSheet, Dimensions, ImageBackground, ScrollView, Picker
+  Alert, KeyboardAvoidingView, Image,
+  View, StyleSheet, Dimensions, ImageBackground, ScrollView, Picker,
 } from 'react-native';
 import { Block, Text, theme } from "galio-framework";
 import Input from "../components/Input";
@@ -11,6 +11,7 @@ import { Avatar } from 'react-native-elements';
 import { MaterialIcons, MaterialCommunityIcons, SimpleLineIcons, FontAwesome, AntDesign } from '@expo/vector-icons';
 import DatePicker from 'react-native-datepicker';
 import { Dialog } from 'react-native-simple-dialogs';
+import * as ImagePicker from 'expo-image-picker';
 
 import AuthAPI from '../api/AuthAPI';
 import PetAPI from '../api/PetAPI';
@@ -22,12 +23,18 @@ export default class AddPet extends React.Component {
     super()
     this.state = {
       name: "",
-      species: "",
-      breed: "",
-      weight: "",
+      size: "",
       height: "",
-      date: "",
+      weight: "",
+      usedTime: "",
+      priceItem: "",
+      // species: "",
+      // breed: "",
+      // weight: "",
+      // height: "",
+      // date: "",
       successDialogVisible: false,
+      image: null,
     };
     this.authAPI = new AuthAPI();
     this.petAPI = new PetAPI();
@@ -37,11 +44,16 @@ export default class AddPet extends React.Component {
     this.didFocus = this.props.navigation.addListener('willFocus', () => {
       this.setState({
         name: "",
-        species: "",
-        breed: "",
-        weight: "",
+        size: "",
         height: "",
-        date: "",
+        weight: "",
+        usedTime: "",
+        priceItem: "",
+        // species: "",
+        // breed: "",
+        // weight: "",
+        // height: "",
+        // date: "",
         successDialogVisible: false,
       })
     })
@@ -51,6 +63,24 @@ export default class AddPet extends React.Component {
   componentWillUnmount() {
     this.didFocus.remove();
   }
+
+  _pickImage = async () => {
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        // allowsEditing: true,
+        // aspect: [4, 3],
+        quality: 1,
+      });
+      if (!result.cancelled) {
+        this.setState({ image: result.uri });
+      }
+
+      console.log(result);
+    } catch (E) {
+      console.log(E);
+    }
+  };
 
   validateInput() {
     var str = "";
@@ -131,8 +161,11 @@ export default class AddPet extends React.Component {
   render() {
     var todayDate = new Date().toISOString().slice(0, 10);
 
+    let { image } = this.state;
+
     return (
-      <ImageBackground source={require("../assets/imgs/background2.gif")} resizeMode='cover' style={{ flex: 1, width: '100%', height: '100%' }}>
+      <Block flex>
+      {/* <ImageBackground source={require("../assets/imgs/background2.gif")} resizeMode='cover' style={{ flex: 1, width: '100%', height: '100%' }}> */}
         <ImageBackground source={require("../assets/imgs/headerBooking.png")} resizeMode='stretch' style={styles.headerImage}>
           <Block>
             <MaterialIcons name='keyboard-backspace' size={40} style={styles.backArrow}
@@ -140,7 +173,7 @@ export default class AddPet extends React.Component {
           </Block>
           <View style={styles.textHeader}>
             <Text color="#ffffff" size={30} style={{ fontFamily: 'ITCKRIST' }} >
-              Pet Register
+              Add Products
             </Text>
           </View>
         </ImageBackground>
@@ -163,6 +196,19 @@ export default class AddPet extends React.Component {
         </Dialog>
 
         <ScrollView style={{ flex: 1, width: width, marginTop: 10 }} keyboardShouldPersistTaps="handled">
+
+          <Block middle style={{ elevation: 1, height: height * 0.2, marginTop: -20 }}>
+            <Button style={styles.buttonPick} onPress={this._pickImage}>
+              <Text bold size={12} color={"black"}>
+              Pick clothes image
+              </Text>
+            </Button>
+          </Block>
+
+          <Block style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+          </Block> 
+
           <KeyboardAvoidingView
             style={{ flex: 1 }}
             behavior="padding"
@@ -170,189 +216,103 @@ export default class AddPet extends React.Component {
           >
             <Block flex middle>
               <Block style={{ width: width * 0.9, alignSelf: 'center', marginTop: 15 }}>
-                <Text color="#E1E1E1" size={18} style={{ marginLeft: 15, fontWeight: 'bold' }}>
+                <Text color="black" size={18} style={{ marginLeft: 15, fontWeight: 'bold' }}>
                   Name
                   </Text>
               </Block>
               <View width={width * 0.9} style={{ alignSelf: 'center' }}>
                 <Input
                   borderless
-                  placeholder=""
+                  placeholder="Enter clothes name"
                   onChangeText={(name) => { this.setState({ name }) }}
                   value={this.state.name}
-                  iconContent={
-                    <SimpleLineIcons
-                      size={16}
-                      color={'#ffffff'}
-                      name="arrow-right"
-                      family="ArgonExtra"
-                      style={styles.inputIcons}
-                    />
-                  }
-                  style={this.state.edit ? { backgroundColor: '#333333' } : { backgroundColor: '#1f1f1f' }}
+                  style={{ backgroundColor: 'rgba(111, 111, 111, 0.8)' }}
                 />
               </View>
 
-              <Block style={styles.textField}>
-                <Text color="#E1E1E1" size={18} style={{ marginLeft: 15, fontWeight: 'bold' }}>
-                  Species
-                  </Text>
-              </Block>
-              <View width={width * 0.9} style={{
-                alignSelf: 'center',
-                backgroundColor: this.state.edit ? '#333333' : '#1f1f1f',
-                borderRadius: 9,
-                marginTop: 10
-              }}>
-                <MaterialIcons name="list" size={16} color="white"
-                  style={styles.pickerIcon}
-                />
-                <Picker
-                  selectedValue={this.state.species}
-                  style={{
-                    width: "100%",
-                    backgroundColor: 'transparent',
-                    height: 44,
-                    color: "#cccccc",
-                    transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }],
-                    borderRadius: 10,
-                  }}
-                  itemStyle={{
-                    backgroundColor: "white",
-                    paddingLeft: 50
-                  }}
-                  onValueChange={(itemValue, itemIndex) => {
-                    this.setState({ species: itemValue });
-                  }}>
-                  <Picker.Item label="" value="" />
-                  <Picker.Item label="Cat" value="cat" />
-                  <Picker.Item label="Dog" value="dog" />
-                  <Picker.Item label="Bird" value="bird" />
-                </Picker>
-              </View>
-
-              <Block style={styles.textField}>
-                <Text color="#E1E1E1" size={18} style={{ marginLeft: 15, fontWeight: 'bold' }}>
-                  Breed
+              <Block style={{ width: width * 0.9, alignSelf: 'center', marginTop: 15 }}>
+                <Text color="black" size={18} style={{ marginLeft: 15, fontWeight: 'bold' }}>
+                  Size
                   </Text>
               </Block>
               <View width={width * 0.9} style={{ alignSelf: 'center' }}>
                 <Input
                   borderless
-                  placeholder=""
-                  onChangeText={(breed) => { this.setState({ breed }) }}
-                  value={this.state.breed}
-                  iconContent={
-                    <MaterialIcons
-                      size={16}
-                      color={'#ffffff'}
-                      name="pets"
-                      family="ArgonExtra"
-                      style={styles.inputIcons}
-                    />
-                  }
-                  style={this.state.edit ? { backgroundColor: '#333333' } : { backgroundColor: '#1f1f1f' }}
+                  placeholder="Enter size"
+                  onChangeText={(size) => { this.setState({ size }) }}
+                  value={this.state.size}
+                  style={{ backgroundColor: 'rgba(111, 111, 111, 0.8)' }}
                 />
               </View>
 
-              <Block style={styles.textField}>
-                <Text color="#E1E1E1" size={18} style={{ marginLeft: 15, fontWeight: 'bold' }}>
-                  Weight(kg)
+              <Block style={{ width: width * 0.9, alignSelf: 'center', marginTop: 15 }}>
+                <Text color="black" size={18} style={{ marginLeft: 15, fontWeight: 'bold' }}>
+                  Height
                   </Text>
               </Block>
               <View width={width * 0.9} style={{ alignSelf: 'center' }}>
                 <Input
                   borderless
-                  placeholder=""
-                  onChangeText={(weight) => { this.setState({ weight }) }}
-                  value={this.state.weight}
-                  iconContent={
-                    <MaterialCommunityIcons
-                      size={16}
-                      color={'#ffffff'}
-                      name="weight"
-                      family="ArgonExtra"
-                      style={styles.inputIcons}
-                    />
-                  }
-                  style={this.state.edit ? { backgroundColor: '#333333' } : { backgroundColor: '#1f1f1f' }}
-                />
-              </View>
-
-              <Block style={styles.textField}>
-                <Text color="#E1E1E1" size={18} style={{ marginLeft: 15, fontWeight: 'bold' }}>
-                  Height(m)
-                  </Text>
-              </Block>
-              <View width={width * 0.9} style={{ alignSelf: 'center' }}>
-                <Input
-                  borderless
-                  placeholder=""
+                  placeholder="Enter height"
                   onChangeText={(height) => { this.setState({ height }) }}
                   value={this.state.height}
-                  iconContent={
-                    <MaterialCommunityIcons
-                      size={16}
-                      color={'#ffffff'}
-                      name="ruler"
-                      family="ArgonExtra"
-                      style={styles.inputIcons}
-                    />
-                  }
-                  style={this.state.edit ? { backgroundColor: '#333333' } : { backgroundColor: '#1f1f1f' }}
+                  style={{ backgroundColor: 'rgba(111, 111, 111, 0.8)' }}
                 />
               </View>
 
-              <Block style={styles.textField}>
-                <Text color="#E1E1E1" size={18} style={{ marginLeft: 15, fontWeight: 'bold' }}>
-                  Date of birth
+              <Block style={{ width: width * 0.9, alignSelf: 'center', marginTop: 15 }}>
+                <Text color="black" size={18} style={{ marginLeft: 15, fontWeight: 'bold' }}>
+                  Weight
                   </Text>
               </Block>
-              <DatePicker
-                style={{
-                  width: width * 0.9, height: 44, marginTop: 8,
-                  backgroundColor: "#1f1f1f", borderRadius: 10,
-                  justifyContent: 'center', alignSelf: 'center'
-                }}
-                date={this.state.date}
-                mode="date"
-                placeholder="Choose..."
-                format="YYYY-MM-DD"
-                minDate="1996-01-01"
-                maxDate={todayDate}
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                showIcon={false}
-                customStyles={{
-                  disabled: {
-                    backgroundColor: "#1f1f1f"
-                  },
-                  dateInput: {
-                    borderWidth: 0,
-                    alignItems: "flex-start",
-                    padding: 10,
-                    marginLeft: 10,
-                  },
-                  dateText: {
-                    color: "#ffffff",
-                  },
-                  placeholderText: {
-                    color: '#505050'
-                  },
-                  modalStyle: {
-                    backgroundColor: "#1f1f1f",
-                  },
-                  modalOverlayStyle: {
-                    backgroundColor: "#1f1f1f",
-                  }
-                  // ... You can check the source to find the other keys.
-                }}
-                onDateChange={(date) => { this.setState({ date: date }) }}
-              />
+              <View width={width * 0.9} style={{ alignSelf: 'center' }}>
+                <Input
+                  borderless
+                  placeholder="Enter weight"
+                  onChangeText={(weight) => { this.setState({ weight }) }}
+                  value={this.state.weight}
+                  style={{ backgroundColor: 'rgba(111, 111, 111, 0.8)' }}
+                />
+              </View>
+
+              <Block style={{ width: width * 0.9, alignSelf: 'center', marginTop: 15 }}>
+                <Text color="black" size={18} style={{ marginLeft: 15, fontWeight: 'bold' }}>
+                  Used Time
+                  </Text>
+              </Block>
+              <View width={width * 0.9} style={{ alignSelf: 'center' }}>
+                <Input
+                  borderless
+                  placeholder="Enter clothes used time"
+                  onChangeText={(usedTime) => { this.setState({ usedTime }) }}
+                  value={this.state.usedTime}
+                  style={{ backgroundColor: 'rgba(111, 111, 111, 0.8)' }}
+                />
+              </View>
+
+              <Block style={{ width: width * 0.9, alignSelf: 'center', marginTop: 15 }}>
+                <Text color="black" size={18} style={{ marginLeft: 15, fontWeight: 'bold' }}>
+                  Price
+                  </Text>
+              </Block>
+              <View width={width * 0.9} style={{ alignSelf: 'center' }}>
+                <Input
+                  borderless
+                  placeholder="Enter exchange price"
+                  onChangeText={(price) => { this.setState({ price }) }}
+                  value={this.state.price}
+                  style={{ backgroundColor: 'rgba(111, 111, 111, 0.8)' }}
+                />
+              </View>
 
               <Block middle style={{ elevation: 1, height: height * 0.2, marginTop: -20 }}>
+                {/* <Button style={styles.buttonAdd} onPress={() => {}}>
+                  <Text bold size={12} color={"black"}>
+                    Add
+                  </Text>
+                </Button> */}
                 <Button color="primary" style={styles.button}
-                  onPress={() => this.createPet()}
+                  onPress={() => {}}
                 >
                   <Text bold size={18} color={argonTheme.COLORS.WHITE}>
                     Add
@@ -362,7 +322,8 @@ export default class AddPet extends React.Component {
             </Block>
           </KeyboardAvoidingView>
         </ScrollView>
-      </ImageBackground>
+      {/* </ImageBackground> */}
+      </Block>
     );
   }
 }
@@ -412,4 +373,19 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 5
   },
+
+
+  //New
+  buttonPick: {
+    width: 130,
+    height: 30,
+    borderRadius: 10,
+    backgroundColor: "#a0a7fa"
+  },
+  buttonAdd: {
+    width: 50,
+    height: 30,
+    borderRadius: 10,
+    backgroundColor: "#a0a7fa"
+  }
 });

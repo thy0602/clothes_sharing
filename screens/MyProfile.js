@@ -17,8 +17,20 @@ import ToggleSwitch from 'toggle-switch-react-native';
 import Popup from '../components/Popup';
 import AuthAPI from '../api/AuthAPI'
 import UserProfileAPI from '../api/UserProfileAPI'
+import StarRating from 'react-native-star-rating';
 
 const { width, height } = Dimensions.get("screen");
+
+const nameItem = "White dress";
+const sizeItem = "M";
+const heightItem = "1m5 - 1m6"
+const weightItem = "45-55 kg"
+const usedTimeItem = "2 years"
+const priceItem = "100,000 VND"
+
+const nameSellerItem = "Phạm Nguyên Minh Thy"
+const phoneSellerItem = "0928299998"
+const addressSellerItem = "15 Nguyễn Trãi, phường 14, Q.5, TP.HCM"
 
 class MyProfile extends React.Component {
   state = {
@@ -150,10 +162,6 @@ class MyProfile extends React.Component {
 
     return (
       <Block flex center style={styles.home}>
-        <ImageBackground
-          source={require("../assets/imgs/background2.gif")}
-          style={{ width, height, zIndex: 1 }}
-        >
 
           <Popup visible={this.state.popUpDialog} choice={this.handleChoice} question={this.state.question} />
 
@@ -166,7 +174,7 @@ class MyProfile extends React.Component {
           </ImageBackground>
 
           <ScrollView style={{marginTop: 5}}>
-            <Block flex={0.8} row style={styles.action} >
+            {/* <Block flex={0.8} row style={styles.action} >
               <View style={{ alignContent: 'flex-start', flex: 1, flexDirection: 'row' }} onTouchStart={(event) => { this.clickLogout(event) }}>
                 <MaterialCommunityIcons name="logout-variant" size={30} style={styles.logoutIcon}></MaterialCommunityIcons>
                 <Text size={20} style={styles.logoutTxt}>Logout</Text>
@@ -181,9 +189,71 @@ class MyProfile extends React.Component {
                 />
                 <Text size={20} style={styles.editTxt}>Edit</Text>
               </View>
+            </Block> */}
+
+            <Block flex={1} style={styles.booking}>
+              <Text style={styles.headerTxt}>Your information</Text>
+              <View style={styles.detailInfo}>
+                <View style={styles.row}>
+                  <Text style={styles.field}>Name:
+                      <Text style={styles.value}> {nameSellerItem}</Text>
+                  </Text>
+                </View>
+
+                <View style={styles.row}>
+                  <Text style={styles.field}>Phone number:
+                      <Text style={styles.value}> {phoneSellerItem}</Text>
+                  </Text>
+                </View>
+
+                <View style={styles.row}>
+                  <Text style={styles.field}>Email:
+                      <Text style={styles.value}> {'pnmthy0602@gmail.com'}</Text>
+                  </Text>
+                </View>
+
+                <View style={styles.row}>
+                  <Text style={styles.field}>Address:
+                      <Text style={styles.value}> {addressSellerItem}</Text>
+                  </Text>
+                </View>
+
+                <View style={styles.row}>
+                  <Text style={styles.field}>Sharing point:
+                      <Text style={styles.value}> {"40"}</Text>
+                  </Text>
+                </View>
+
+                <Text style={styles.headerTxt}>Reliability</Text>
+
+                <View style={{alignItems: 'center'}}>
+                  <StarRating
+                    name="small-rating" 
+                    caption="Small!"
+                    disabled={true}
+                    maxStars={5}
+                    rating={3.5}
+                    starSize={30}
+                    // rating={this.state.starCount}
+                    // selectedStar={(rating) => this.onStarRatingPress(rating)}
+                    fullStarColor={'yellow'}
+                  />
+                </View>
+
+                <Text> {'\n'} </Text>
+              </View>
             </Block>
 
-            <Block flex={0.4} center>
+            <Block flex={0.1} middle style={{ marginBottom: height * 0.1 }}>
+              {updateInfo}
+              <Button style={styles.passwordBtn} onPress={(event) => { this.clickLogout(event) }}>
+                <Text bold size={16} color={argonTheme.COLORS.GREY}>
+                  Logout
+                </Text>
+              </Button>
+            </Block>
+
+            {/* <Block flex={0.4} center>
               <KeyboardAvoidingView
                 style={{ flex: 1 }}
                 behavior="padding"
@@ -268,21 +338,20 @@ class MyProfile extends React.Component {
                     style={this.state.edit ? { backgroundColor: '#333333' } : { backgroundColor: '#1f1f1f' }}
                   />
                 </Block>
-
                 <Block flex={0.1} middle style={{ marginBottom: height * 0.1 }}>
                   {updateInfo}
-                  <Button style={styles.passwordBtn} onPress={() => { navigation.navigate("ChangePassword") }}>
-                    <Text bold size={16} color={argonTheme.COLORS.WHITE}>
-                      Change Password
+                  {/* <Button style={styles.passwordBtn} onPress={() => { navigation.navigate("ChangePassword") }}> */}
+                  {/* <Button style={styles.passwordBtn} onPress={(event) => { this.clickLogout(event) }}>
+                    <Text bold size={16} color={argonTheme.COLORS.GREY}>
+                      Logout
                     </Text>
                   </Button>
                 </Block>
 
                 <Block flex middle style={{ elevation: 1, height: height * 0.15 }} />
-              </KeyboardAvoidingView>
-            </Block>
+              </KeyboardAvoidingView> */}
+            {/* </Block> */}
           </ScrollView>
-        </ImageBackground>
       </Block>
     );
   }
@@ -345,13 +414,13 @@ const styles = StyleSheet.create({
     textAlign: 'left'
   },
   editTxt: {
-    color: 'white',
+    color: 'black',
     marginLeft: 5,
     textAlign: 'left'
   },
   passwordBtn: {
     marginTop: 15,
-    backgroundColor: 'grey'
+    backgroundColor: 'rgba(128, 128, 192, 0.8)'
   },
   picker: {
     width: '100%',
@@ -361,7 +430,52 @@ const styles = StyleSheet.create({
     transform: [{ scaleX: 0.77 }, { scaleY: 0.77 }],
     position: 'absolute',
     color: "#cccccc"
-  }
+  },
+
+
+
+  //New
+  imageBlock: {
+    backgroundColor: "rgba(45, 45, 45, 0.95)",
+    borderRadius: 15,
+    width: "95%",
+    // paddingHorizontal: 20,
+    marginTop: 5,
+    marginBottom: 20,
+    alignSelf: 'center'
+  },
+  booking: {
+    backgroundColor: "rgba(224, 224, 224, 1)",
+    borderRadius: 15,
+    width: "95%",
+    paddingHorizontal: 20,
+    marginTop: 5,
+    marginBottom: 20,
+    alignSelf: 'center'
+  },
+  headerTxt: {
+    fontFamily: "opensans",
+    fontSize: 25,
+    textAlign: 'center',
+    marginTop: 20,
+    fontWeight: "400",
+    color: 'black',
+  },
+  row: {
+    textAlign: "left",
+    width: "100%",
+    marginTop: 10,
+  },
+  detailInfo: {
+    width: "100%",
+    left: 0
+  },
+  field: {
+    fontWeight: '500',
+    fontFamily: 'opensans',
+    fontSize: 17,
+    color: 'black'
+  },
 });
 
 export default MyProfile;
