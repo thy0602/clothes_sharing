@@ -3,8 +3,8 @@ import {
   Alert, KeyboardAvoidingView, Image,
   View, StyleSheet, Dimensions, ImageBackground, ScrollView, Picker,
 } from 'react-native';
-import { Block, Text, theme } from "galio-framework";
-import Input from "../components/Input";
+import { Block, Text, theme, Input } from "galio-framework";
+//import Input from "../components/Input";
 import { Icon, Button } from "../components";
 import { Images, argonTheme } from "../constants";
 import { Avatar } from 'react-native-elements';
@@ -221,12 +221,19 @@ export default class AddProducts extends React.Component {
                   </Text>
               </Block>
               <View width={width * 0.9} style={{ alignSelf: 'center' }}>
-                <Input
+                {/* <Input
                   borderless
                   placeholder="Enter clothes name"
                   onChangeText={(name) => { this.setState({ name }) }}
                   value={this.state.name}
                   style={{ backgroundColor: 'rgba(111, 111, 111, 0.8)' }}
+                /> */}
+                <Input
+                  placeholder="Enter clothes name"
+                  style={{ borderColor: "black" }}
+                  onChangeText={(name) => { this.setState({ name }) }}
+                  value={this.state.name}
+                  placeholderTextColor="grey"
                 />
               </View>
 
@@ -236,12 +243,19 @@ export default class AddProducts extends React.Component {
                   </Text>
               </Block>
               <View width={width * 0.9} style={{ alignSelf: 'center' }}>
-                <Input
+                {/* <Input
                   borderless
                   placeholder="Enter size"
                   onChangeText={(size) => { this.setState({ size }) }}
                   value={this.state.size}
                   style={{ backgroundColor: 'rgba(111, 111, 111, 0.8)' }}
+                /> */}
+                <Input
+                  placeholder="Enter size"
+                  style={{ borderColor: "black" }}
+                  onChangeText={(size) => { this.setState({ size }) }}
+                  value={this.state.size}
+                  placeholderTextColor="grey"
                 />
               </View>
 
@@ -251,12 +265,19 @@ export default class AddProducts extends React.Component {
                   </Text>
               </Block>
               <View width={width * 0.9} style={{ alignSelf: 'center' }}>
-                <Input
+                {/* <Input
                   borderless
                   placeholder="Enter height"
                   onChangeText={(height) => { this.setState({ height }) }}
                   value={this.state.height}
                   style={{ backgroundColor: 'rgba(111, 111, 111, 0.8)' }}
+                /> */}
+                <Input
+                  placeholder="Enter height"
+                  style={{ borderColor: "black" }}
+                  onChangeText={(height) => { this.setState({ height }) }}
+                  value={this.state.height}
+                  placeholderTextColor="grey"
                 />
               </View>
 
@@ -266,12 +287,19 @@ export default class AddProducts extends React.Component {
                   </Text>
               </Block>
               <View width={width * 0.9} style={{ alignSelf: 'center' }}>
-                <Input
+                {/* <Input
                   borderless
                   placeholder="Enter weight"
                   onChangeText={(weight) => { this.setState({ weight }) }}
                   value={this.state.weight}
                   style={{ backgroundColor: 'rgba(111, 111, 111, 0.8)' }}
+                /> */}
+                <Input
+                  placeholder="Enter weight"
+                  style={{ borderColor: "black" }}
+                  onChangeText={(weight) => { this.setState({ weight }) }}
+                  value={this.state.weight}
+                  placeholderTextColor="grey"
                 />
               </View>
 
@@ -281,12 +309,19 @@ export default class AddProducts extends React.Component {
                   </Text>
               </Block>
               <View width={width * 0.9} style={{ alignSelf: 'center' }}>
-                <Input
+                {/* <Input
                   borderless
                   placeholder="Enter clothes used time"
                   onChangeText={(usedTime) => { this.setState({ usedTime }) }}
                   value={this.state.usedTime}
                   style={{ backgroundColor: 'rgba(111, 111, 111, 0.8)' }}
+                /> */}
+                <Input
+                  placeholder="Enter clothes used time"
+                  style={{ borderColor: "black" }}
+                  onChangeText={(usedTime) => { this.setState({ usedTime }) }}
+                  value={this.state.usedTime}
+                  placeholderTextColor="grey"
                 />
               </View>
 
@@ -296,12 +331,19 @@ export default class AddProducts extends React.Component {
                   </Text>
               </Block>
               <View width={width * 0.9} style={{ alignSelf: 'center' }}>
-                <Input
+                {/* <Input
                   borderless
                   placeholder="Enter exchange price"
                   onChangeText={(price) => { this.setState({ price }) }}
                   value={this.state.price}
                   style={{ backgroundColor: 'rgba(111, 111, 111, 0.8)' }}
+                /> */}
+                <Input
+                  placeholder="Enter exchange price"
+                  style={{ borderColor: "black" }}
+                  onChangeText={(price) => { this.setState({ price }) }}
+                  value={this.state.price}
+                  placeholderTextColor="grey"
                 />
               </View>
 

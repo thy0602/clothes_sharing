@@ -94,28 +94,12 @@ const ProfileStack = createStackNavigator(
         header: null
       }
     },
-  },
-  {
-    transitionConfig: () => {
-        return fromRight(1000);
-    }
-  }
-);
-
-const ActivitiesStack = createStackNavigator(
-  {
-    Activities: {
-      screen: Activities,
-      navigationOptions: {
-        header: null,
-      }
-    },
     AddProducts: {
       screen: AddProducts,
       navigationOptions:{
         header: null
       }
-    },
+    }
   },
   {
     transitionConfig: () => {
@@ -124,11 +108,33 @@ const ActivitiesStack = createStackNavigator(
   }
 );
 
+// const ActivitiesStack = createStackNavigator(
+//   {
+//     Activities: {
+//       screen: Activities,
+//       navigationOptions: {
+//         header: null,
+//       }
+//     },
+//     AddProducts: {
+//       screen: AddProducts,
+//       navigationOptions:{
+//         header: null
+//       }
+//     },
+//   },
+//   {
+//     transitionConfig: () => {
+//         return fromRight(1000);
+//     }
+//   }
+// );
+
 const HomeTab = createBottomTabNavigator(
   {
     Home: HomeStack,
     Events: EventsStack,
-    Activities: ActivitiesStack,
+    //Activities: ActivitiesStack,
     Profile: ProfileStack
   },
   {
@@ -141,7 +147,7 @@ const HomeTab = createBottomTabNavigator(
             'Home': 'apps',
             'Profile': 'person',
             'Events': 'list',
-            'Activities': 'mail'
+            //'Activities': 'mail'
           }[route]
           return <MaterialIcons name={name} color={tintColor} size={22} />
         },

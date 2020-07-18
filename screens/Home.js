@@ -20,6 +20,8 @@ import Popup from '../components/Popup';
 import Loader from '../components/Loader';
 import { Avatar } from "react-native-elements";
 
+import NotiCard from "../components/card/NotiCard";
+
 import CustomizedCard from "../components/card/CustomizedCard";
 
 import AuthAPI from "../api/AuthAPI";
@@ -69,6 +71,17 @@ class Home extends React.Component {
         </ImageBackground>
 
         <ScrollView style={{ flex: 1, width: width}}>
+            <Block flex style={{ marginTop: 10, marginBottom: 10, width: 0.7*width, alignSelf: 'center'}}>
+              <NotiCard 
+                //imageSrc={require("../assets/imgs/white-dress.jpg")}
+                // avatarSrc={{uri: "http://i.pravatar.cc/100?id=skater"}}
+                //avatarSrc={require("../assets/imgs/pikachu.jpg")}
+                product="White Dress"
+                title="Phạm Nguyên Minh Thy"
+                caption="2 days"
+                location="Nguyễn Trãi, HCM" 
+              />
+            </Block>
           <TouchableOpacity onPress={() => {this.goClothesDetails("item")}}>
             <Block flex style={{ marginTop: 10, marginBottom: 10, width: 0.7*width, alignSelf: 'center'}}>
               <CustomizedCard 

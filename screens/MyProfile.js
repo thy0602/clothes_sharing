@@ -12,7 +12,7 @@ import {
 import { Block, Text, theme } from "galio-framework";
 import { argonTheme } from "../constants";
 import { Button, Icon, Input } from "../components";
-import { MaterialIcons, MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
+import { MaterialIcons, MaterialCommunityIcons, FontAwesome, Ionicons } from '@expo/vector-icons';
 import ToggleSwitch from 'toggle-switch-react-native';
 import Popup from '../components/Popup';
 import AuthAPI from '../api/AuthAPI'
@@ -174,22 +174,6 @@ class MyProfile extends React.Component {
           </ImageBackground>
 
           <ScrollView style={{marginTop: 5}}>
-            {/* <Block flex={0.8} row style={styles.action} >
-              <View style={{ alignContent: 'flex-start', flex: 1, flexDirection: 'row' }} onTouchStart={(event) => { this.clickLogout(event) }}>
-                <MaterialCommunityIcons name="logout-variant" size={30} style={styles.logoutIcon}></MaterialCommunityIcons>
-                <Text size={20} style={styles.logoutTxt}>Logout</Text>
-              </View>
-
-              <View style={{ justifyContent: 'flex-end', flex: 1, flexDirection: 'row' }}>
-                <ToggleSwitch
-                  isOn={this.state.edit}
-                  onColor={"#511efa"}
-                  offColor={"#999999"}
-                  onToggle={(isOn) => { this.setState({ edit: isOn }) }}
-                />
-                <Text size={20} style={styles.editTxt}>Edit</Text>
-              </View>
-            </Block> */}
 
             <Block flex={1} style={styles.booking}>
               <Text style={styles.headerTxt}>Your information</Text>
@@ -252,106 +236,10 @@ class MyProfile extends React.Component {
                 </Text>
               </Button>
             </Block>
-
-            {/* <Block flex={0.4} center>
-              <KeyboardAvoidingView
-                style={{ flex: 1 }}
-                behavior="padding"
-                keyboardVerticalOffset={this.state.keyboardHeight}
-                enabled
-              >
-                <Block width={width * 0.9} style={{ marginTop: 20, marginBottom: 15 }}>
-                  <Input
-                    borderless
-                    placeholder="First name:"
-                    onChangeText={(firstName) => { this.setState({ firstName }) }}
-                    value={this.state.firstName}
-                    editable={this.state.edit}
-                    iconContent={
-                      <Icon
-                        size={16}
-                        color={'#ffffff'}
-                        name="hat-3"
-                        family="ArgonExtra"
-                        style={styles.inputIcons}
-                      />
-                    }
-                    style={this.state.edit ? { backgroundColor: '#333333' } : { backgroundColor: '#1f1f1f' }}
-                  />
-                </Block>
-
-                <Block width={width * 0.9} style={{ marginBottom: 15 }}>
-                  <Input
-                    borderless
-                    placeholder="Last name:"
-                    onChangeText={(lastName) => { this.setState({ lastName }) }}
-                    value={this.state.lastName}
-                    editable={this.state.edit}
-                    iconContent={
-                      <Icon
-                        size={16}
-                        color={'#ffffff'}
-                        name="hat-3"
-                        family="ArgonExtra"
-                        style={styles.inputIcons}
-                      />
-                    }
-                    style={this.state.edit ? { backgroundColor: '#333333' } : { backgroundColor: '#1f1f1f' }}
-                  />
-                </Block>
-
-                <Block width={width * 0.9} style={{ marginBottom: 15 }}>
-                  <Input
-                    borderless
-                    placeholder="Email"
-                    value={this.state.email}
-                    editable={false}
-                    iconContent={
-                      <Icon
-                        size={16}
-                        color={'#ffffff'}
-                        name="ic_mail_24px"
-                        family="ArgonExtra"
-                        style={styles.inputIcons}
-                      />
-                    }
-                    style={{ backgroundColor: '#1f1f1f' }}
-                  />
-                </Block>
-
-                <Block width={width * 0.9} style={{ marginBottom: 15 }}>
-                  <Input
-                    borderless
-                    placeholder="Phone number"
-                    editable={this.state.edit}
-                    onChangeText={(mobile) => { this.setState({ mobile }) }}
-                    value={this.state.mobile}
-                    iconContent={
-                      <MaterialIcons
-                        size={16}
-                        color={'#ffffff'}
-                        name="phone"
-                        family="ArgonExtra"
-                        style={styles.inputIcons}
-                      />
-                    }
-                    style={this.state.edit ? { backgroundColor: '#333333' } : { backgroundColor: '#1f1f1f' }}
-                  />
-                </Block>
-                <Block flex={0.1} middle style={{ marginBottom: height * 0.1 }}>
-                  {updateInfo}
-                  {/* <Button style={styles.passwordBtn} onPress={() => { navigation.navigate("ChangePassword") }}> */}
-                  {/* <Button style={styles.passwordBtn} onPress={(event) => { this.clickLogout(event) }}>
-                    <Text bold size={16} color={argonTheme.COLORS.GREY}>
-                      Logout
-                    </Text>
-                  </Button>
-                </Block>
-
-                <Block flex middle style={{ elevation: 1, height: height * 0.15 }} />
-              </KeyboardAvoidingView> */}
-            {/* </Block> */}
           </ScrollView>
+
+          <Ionicons name='ios-add-circle' size={60} color='#511efa' style={styles.addIcon} 
+                    onPress={() => this.props.navigation.navigate('AddProducts')}/>
       </Block>
     );
   }
@@ -420,6 +308,8 @@ const styles = StyleSheet.create({
   },
   passwordBtn: {
     marginTop: 15,
+    width: 60,
+    height: 30,
     backgroundColor: 'rgba(128, 128, 192, 0.8)'
   },
   picker: {
@@ -475,6 +365,14 @@ const styles = StyleSheet.create({
     fontFamily: 'opensans',
     fontSize: 17,
     color: 'black'
+  },
+
+  //New
+  addIcon: {
+    alignSelf: 'flex-end',
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
   },
 });
 
