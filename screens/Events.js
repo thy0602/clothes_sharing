@@ -137,21 +137,6 @@ class Events extends React.Component {
             </Block>
           </TouchableOpacity>
           
-
-          <TouchableOpacity onPress={() => {this.goEventDetails("item")}}>
-            <Block flex style={{ marginTop: 10, marginBottom: 10, width: 0.7*width, alignSelf: 'center'}}>
-              <CustomizedCard 
-                imageSrc={require("../assets/imgs/clothes-event.jpg")}
-                // avatarSrc={{uri: "http://i.pravatar.cc/100?id=skater"}}
-                avatarSrc={require("../assets/imgs/organization-logo.jpg")}
-                product="Áo Ấm Cho Em"
-                title="Volunteer Team"
-                caption="12/10 - 26/10"
-                location="Hà Nội" 
-              />
-            </Block>
-          </TouchableOpacity>
-          
         </ScrollView>
         
       </Block>
