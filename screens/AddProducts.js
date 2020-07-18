@@ -13,6 +13,8 @@ import DatePicker from 'react-native-datepicker';
 import { Dialog } from 'react-native-simple-dialogs';
 import * as ImagePicker from 'expo-image-picker';
 
+import Cloth from "../constants/Cloth"
+
 import AuthAPI from '../api/AuthAPI';
 import PetAPI from '../api/PetAPI';
 
@@ -28,6 +30,7 @@ export default class AddProducts extends React.Component {
       weight: "",
       usedTime: "",
       priceItem: "",
+      tag: "",
       // species: "",
       // breed: "",
       // weight: "",
@@ -49,11 +52,13 @@ export default class AddProducts extends React.Component {
         weight: "",
         usedTime: "",
         priceItem: "",
+        tag: "",
         // species: "",
         // breed: "",
         // weight: "",
         // height: "",
         // date: "",
+        image: null,
         successDialogVisible: false,
       })
     })
@@ -81,6 +86,51 @@ export default class AddProducts extends React.Component {
       console.log(E);
     }
   };
+
+  addProduct = () => {
+    var arrTag = this.state.tag.split(", ");
+    let object = {
+      name: this.state.name,
+      size: this.state.size,
+      height: this.state.height,
+      weight: this.state.weight,
+      usedTime: this.state.usedTime,
+      price: this.state.price,
+      available: 1,
+      imgSource: this.state.imgSource,
+      tag: arrTag
+    }
+
+    try {
+      let clothes = AsyncStorage.get('clothes');
+      if (clothes === null)
+        clothes = Cloth;
+    } catch (error) {
+      clothes = Cloth;
+    }
+
+    clothes.push(object);
+
+    try {
+      AsyncStorage.setItem('clothes', clothes);
+    } catch (error) {
+      // Error saving data
+    }
+
+    console.log(clothes);
+
+    Alert.alert(
+      'Notification',
+      'You added a new item',
+      [
+        // { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+        {
+          text: 'OK', onPress: () => console.log('OK Pressed'), style: 'OK'
+        },
+      ],
+      { cancelable: false }
+    )
+  }
 
   validateInput() {
     var str = "";
@@ -231,6 +281,7 @@ export default class AddProducts extends React.Component {
                 <Input
                   placeholder="Enter clothes name"
                   style={{ borderColor: "black" }}
+                  color={'black'}
                   onChangeText={(name) => { this.setState({ name }) }}
                   value={this.state.name}
                   placeholderTextColor="grey"
@@ -253,6 +304,7 @@ export default class AddProducts extends React.Component {
                 <Input
                   placeholder="Enter size"
                   style={{ borderColor: "black" }}
+                  color={'black'}
                   onChangeText={(size) => { this.setState({ size }) }}
                   value={this.state.size}
                   placeholderTextColor="grey"
@@ -275,6 +327,7 @@ export default class AddProducts extends React.Component {
                 <Input
                   placeholder="Enter height"
                   style={{ borderColor: "black" }}
+                  color={'black'}
                   onChangeText={(height) => { this.setState({ height }) }}
                   value={this.state.height}
                   placeholderTextColor="grey"
@@ -297,6 +350,7 @@ export default class AddProducts extends React.Component {
                 <Input
                   placeholder="Enter weight"
                   style={{ borderColor: "black" }}
+                  color={'black'}
                   onChangeText={(weight) => { this.setState({ weight }) }}
                   value={this.state.weight}
                   placeholderTextColor="grey"
@@ -319,6 +373,7 @@ export default class AddProducts extends React.Component {
                 <Input
                   placeholder="Enter clothes used time"
                   style={{ borderColor: "black" }}
+                  color={'black'}
                   onChangeText={(usedTime) => { this.setState({ usedTime }) }}
                   value={this.state.usedTime}
                   placeholderTextColor="grey"
@@ -341,8 +396,32 @@ export default class AddProducts extends React.Component {
                 <Input
                   placeholder="Enter exchange price"
                   style={{ borderColor: "black" }}
+                  color={'black'}
                   onChangeText={(price) => { this.setState({ price }) }}
                   value={this.state.price}
+                  placeholderTextColor="grey"
+                />
+              </View>
+
+              <Block style={{ width: width * 0.9, alignSelf: 'center', marginTop: 15 }}>
+                <Text color="black" size={18} style={{ marginLeft: 15, fontWeight: 'bold' }}>
+                  Add tag
+                  </Text>
+              </Block>
+              <View width={width * 0.9} style={{ alignSelf: 'center' }}>
+                {/* <Input
+                  borderless
+                  placeholder="Enter exchange price"
+                  onChangeText={(price) => { this.setState({ price }) }}
+                  value={this.state.price}
+                  style={{ backgroundColor: 'rgba(111, 111, 111, 0.8)' }}
+                /> */}
+                <Input
+                  placeholder="Enter tag of product"
+                  style={{ borderColor: "black" }}
+                  color={'black'}
+                  onChangeText={(tag) => { this.setState({ tag }) }}
+                  value={this.state.tag}
                   placeholderTextColor="grey"
                 />
               </View>
@@ -354,7 +433,7 @@ export default class AddProducts extends React.Component {
                   </Text>
                 </Button> */}
                 <Button color="primary" style={styles.button}
-                  onPress={() => {}}
+                  onPress={this.addProduct}
                 >
                   <Text bold size={18} color={argonTheme.COLORS.WHITE}>
                     Add

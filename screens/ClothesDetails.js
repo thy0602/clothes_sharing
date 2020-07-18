@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
   Alert, KeyboardAvoidingView, Image,
-  View, StyleSheet, Dimensions, ImageBackground, ScrollView, Picker
+  View, StyleSheet, Dimensions, ImageBackground, ScrollView, Picker, AsyncStorage
 } from 'react-native';
 import { Block, Text, theme } from "galio-framework";
 import { Icon, Button } from "../components";
@@ -12,11 +12,13 @@ import DatePicker from 'react-native-datepicker';
 import { Dialog } from 'react-native-simple-dialogs';
 import ToggleSwitch from 'toggle-switch-react-native';
 
-//import {BackgroundColor} from 'react-native-background-color';
 import StarRating from 'react-native-star-rating';
 
-import AuthAPI from '../api/AuthAPI';
-import PetAPI from '../api/PetAPI';
+import Cloth from "../constants/Cloth"
+import Users from "../constants/User"
+
+// import AuthAPI from '../api/AuthAPI';
+// import PetAPI from '../api/PetAPI';
 
 const { width, height } = Dimensions.get("screen");
 const imageCLothes = require("../assets/imgs/white-dress.jpg")
@@ -33,6 +35,9 @@ const phoneSellerItem = "0928299998"
 const addressSellerItem = "15 Nguyễn Trãi, phường 14, Q.5, TP.HCM"
 
 const starItem = 3.5
+
+const clothesList = []
+const userList = []
 
 export default class ClothesDetails extends React.Component {
   constructor() {
@@ -62,7 +67,7 @@ export default class ClothesDetails extends React.Component {
   addCareItem() {
     Alert.alert(
       'Add care',
-      'Do you want to add care to this item?',
+      'Do you want to rent this item?',
       [
         { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
         {
@@ -82,6 +87,7 @@ export default class ClothesDetails extends React.Component {
     // BackgroundColor.setColor("#CFCFCF");
     this.didFocus = this.props.navigation.addListener('willFocus', () => {
       this.setState({ loading: true }, () => {
+        //this._retrieveData();
         this.setData();
       })
     })
@@ -108,7 +114,31 @@ export default class ClothesDetails extends React.Component {
   }
 
   render() {
+    try {
+      let users = AsyncStorage.get('users');
+      if (users === null)
+        users = Users;
+    } catch (error) {
+      users = Users;
+    }
 
+    try {
+      let currentUser = AsyncStorage.get('currentUser');
+      if (currentUser === null)
+        currentUser = 1;
+    } catch (error) {
+      currentUser = 1;
+    }
+
+    try {
+      let clothes = AsyncStorage.get('clothes');
+      if (clothes === null)
+        clothes = Cloth;
+    } catch (error) {
+      clothes = Cloth;
+    }
+
+    let index = 0;
 
     return (
       <Block flex>
@@ -127,7 +157,7 @@ export default class ClothesDetails extends React.Component {
         
         <ScrollView style={{ marginBottom: 15 }}>
           <Block flex={1} style={styles.imageBlock}>
-            <ImageBackground source={imageCLothes} resizeMode='stretch' style={styles.clothesImage}> 
+            <ImageBackground source={{uri: clothes[index].imgSource}} resizeMode='stretch' style={styles.clothesImage}> 
               </ImageBackground>
           </Block>
 
@@ -138,37 +168,37 @@ export default class ClothesDetails extends React.Component {
                 <View style={styles.detailInfo}>
                   <View style={styles.row}>
                     <Text style={styles.field}>Name:
-                        <Text style={styles.value}> {nameItem}</Text>
+                        <Text style={styles.value}> {clothes[index].name}</Text>
                     </Text>
                   </View>
 
                   <View style={styles.row}>
                     <Text style={styles.field}>Size:
-                        <Text style={styles.value}> {sizeItem}</Text>
+                        <Text style={styles.value}> {clothes[index].size}</Text>
                     </Text>
                   </View>
 
                   <View style={styles.row}>
                     <Text style={styles.field}>Height:
-                        <Text style={styles.value}> {heightItem} </Text>
+                        <Text style={styles.value}> {clothes[index].height} </Text>
                     </Text>
                   </View>
 
                   <View style={styles.row}>
                     <Text style={styles.field}>Weight:
-                        <Text style={styles.value}> {weightItem} </Text>
+                        <Text style={styles.value}> {clothes[index].weight} </Text>
                     </Text>
                   </View>
 
                   <View style={styles.row}>
                     <Text style={styles.field}>Used Time:
-                          <Text style={styles.value}> {usedTimeItem}</Text>
+                          <Text style={styles.value}> {clothes[index].usedTime}</Text>
                     </Text>
                   </View>
 
                   <View style={styles.row}>
                     <Text style={styles.field}>Price:
-                          <Text style={styles.value}> {priceItem}</Text>
+                          <Text style={styles.value}> {clothes[index].price}</Text>
                     </Text>
                   </View>
                 </View>
@@ -177,19 +207,19 @@ export default class ClothesDetails extends React.Component {
               <View style={styles.detailInfo}>
                 <View style={styles.row}>
                   <Text style={styles.field}>Name:
-                      <Text style={styles.value}> {nameSellerItem}</Text>
+                      <Text style={styles.value}> {users[currentUser - 1].name}</Text>
                   </Text>
                 </View>
 
                 <View style={styles.row}>
                   <Text style={styles.field}>Phone number:
-                      <Text style={styles.value}> {phoneSellerItem}</Text>
+                      <Text style={styles.value}> {users[currentUser - 1].phone}</Text>
                   </Text>
                 </View>
 
                 <View style={styles.row}>
                   <Text style={styles.field}>Address:
-                      <Text style={styles.value}> {addressSellerItem}</Text>
+                      <Text style={styles.value}> {users[currentUser - 1].address}</Text>
                   </Text>
                 </View>
 
@@ -225,7 +255,7 @@ export default class ClothesDetails extends React.Component {
             <Block style={styles.buttonRow}>
               <Button style={styles.button} onPress={() => {this.addCareItem()}}>
                 <Text bold size={12} color={"black"}>
-                  Add care
+                  Rent
                 </Text>
               </Button>
               <Button style={styles.button} onPress={() => {this.goChat()}}>
@@ -237,165 +267,11 @@ export default class ClothesDetails extends React.Component {
           </ScrollView>
         
 
-        {/* <ScrollView style={{ flex: 1, width: width, marginTop: 10}}>
-          <ImageBackground source={imageCLothes} resizeMode='stretch' style={styles.clothesImage}> 
-          </ImageBackground>
-
-          <Block style={{flex: 1, width: width, marginLeft: 20, marginTop: 20, flexDirection: 'row'}}>
-            <AntDesign name="shoppingcart" size={24} color="blue" />
-            <Text style={{color: 'white', marginTop: 3}}> {" "} Product Information </Text>
-          </Block>
-
-          <Block style={styles.inforBlock}>
-            <Block style={{flex: 1, width: width, marginLeft: 20, marginTop: 5, flexDirection: 'row'}}>
-                <Text style={{color: '#363636', fontSize: 13}}> Name: </Text>
-                <Text style={{color: '#363636', fontSize: 13}}> {this.state.name} </Text>
-            </Block>
-            <Block style={{flex: 1, width: width, marginLeft: 20, flexDirection: 'row'}}>
-                <Text style={{color: '#363636', fontSize: 13}}> Height: </Text>
-                <Text style={{color: '#363636', fontSize: 13}}> {this.state.height} </Text>
-            </Block>
-            <Block style={{flex: 1, width: width, marginLeft: 20, flexDirection: 'row'}}>
-                <Text style={{color: '#363636', fontSize: 13}}> Weight: </Text>
-                <Text style={{color: '#363636', fontSize: 13}}> {this.state.weight} </Text>
-            </Block>
-            <Block style={{flex: 1, width: width, marginLeft: 20, flexDirection: 'row'}}>
-                <Text style={{color: '#363636', fontSize: 13}}> Used Time: </Text>
-                <Text style={{color: '#363636', fontSize: 13}}> {this.state.usedTime} </Text>
-            </Block>
-            <Block style={{flex: 1, width: width, marginLeft: 20, marginBottom: 5, flexDirection: 'row'}}>
-                <Text style={{color: '#363636', fontSize: 13}}> Price: </Text>
-                <Text style={{color: '#363636', fontSize: 13}}> {this.state.price} </Text>
-            </Block>
-          </Block>
-
-          <Block style={{flex: 1, width: width, marginLeft: 20, marginTop: 20, flexDirection: 'row'}}>
-            <AntDesign name="contacts" size={24} color="blue" />
-            <Text style={{color: 'white', marginTop: 3}}> {" "} Contact </Text>
-          </Block>
-          <Block style={styles.inforBlock}>
-            <Block style={{flex: 1, width: width, marginLeft: 20, marginTop: 5, flexDirection: 'row'}}>
-                <Text style={{color: '#363636', fontSize: 13}}> Seller: </Text>
-                <Text style={{color: '#363636', fontSize: 13}}> {this.state.nameSeller} </Text>
-            </Block>
-            <Block style={{flex: 1, width: width, marginLeft: 20, flexDirection: 'row'}}>
-                <Text style={{color: '#363636', fontSize: 13}}> Phone number: </Text>
-                <Text style={{color: '#363636', fontSize: 13}}> {this.state.phoneSeller} </Text>
-            </Block>
-            <Block style={{flex: 1, width: width, marginLeft: 20, marginBottom: 10, flexDirection: 'row'}}>
-                <Text style={{color: '#363636', fontSize: 13}}> Address: </Text>
-                <Text style={{color: '#363636', fontSize: 13}}> {this.state.addressSeller} </Text>
-            </Block>
-
-            <Text style={{
-                color: '#363636', 
-                fontSize: 17, 
-                fontWeight: "bold", 
-                marginBottom: 5, 
-                alignSelf: 'center'}}> 
-                Review 
-            </Text>
-            
-            <View style = {{borderWidth: 0.5, borderColor:'green', marginLeft:50, marginRight:50, marginBottom: 10 }} />
-          
-            <View style={{alignItems: 'center'}}>
-              <StarRating
-                name="small-rating" 
-                caption="Small!"
-                disabled={false}
-                maxStars={5}
-                rating={this.state.starCount}
-                starSize={30}
-                // rating={this.state.starCount}
-                // selectedStar={(rating) => this.onStarRatingPress(rating)}
-                fullStarColor={'yellow'}
-              />
-            </View>
-          </Block>
-
-          <Block style={styles.buttonRow}>
-            <Button style={styles.button} onPress={() => {this.addCareItem()}}>
-              <Text bold size={12} color={"black"}>
-                Add care
-              </Text>
-            </Button>
-            <Button style={styles.button} onPress={() => {this.goChat()}}>
-              <Text bold size={12} color={"black"}>
-                Chat
-              </Text>
-            </Button>
-          </Block>
-          
-        </ScrollView> */}
+        
       </Block>
     );
   }
 }
-
-const imgs = {
-  'cat': 'https://drive.google.com/open?id=1jWdUyCNEcycVt9qaY2DTctZTnXfmQ28U',
-  'dog': 'https://drive.google.com/open?id=1iFH_6_qt8OFqHkSMvlC_QB2qFZu9HtIv',
-  'bird': 'https://drive.google.com/open?id=1iFH_6_qt8OFqHkSMvlC_QB2qFZu9HtIv'
-}
-
-// const styles = StyleSheet.create({
-//   headerImage: {
-//     width: width,
-//     height: 80
-//   },
-//   textHeader: {
-//     alignItems: 'center',
-//     marginTop: 7
-//   },
-//   backArrow: {
-//     left: 10,
-//     top: 10,
-//     color: 'white',
-//     position: 'absolute'
-//   },
-//   inputStyle: {
-//     backgroundColor: "#282828"
-//   },
-//   button: {
-//     width: width * 0.5,
-//     marginTop: 25,
-//     borderRadius: 10,
-//   },
-//   deleteButton: {
-//     width: 100,
-//     height: 30,
-//     borderRadius: 15,
-//     backgroundColor: "red",
-//   },
-//   buttonRow: {
-//     width: width * 0.9,
-//     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//     alignSelf: 'center',
-//     marginTop: 5
-//   },
-//   textField: {
-//     width: width * 0.9,
-//     alignSelf: 'center',
-//     marginTop: 5
-//   },
-//   inputIcons: {
-//     marginRight: 12,
-//   },
-//   pickerIcon: {
-//     marginRight: 10,
-//     position: 'absolute',
-//     paddingTop: 14,
-//     paddingLeft: 15,
-//     zIndex: 10,
-//     elevation: 10
-//   },
-//   imgPet: {
-//     width: 100,
-//     height: 100,
-//     alignSelf: 'center'
-//   }
-// });
 
 const styles = StyleSheet.create({
   headerImage: {
@@ -414,7 +290,7 @@ const styles = StyleSheet.create({
   },
   clothesImage: {
     width: "100%",
-    height: 200
+    height: 250
   },
   inforBlock: {
     backgroundColor: 'white',
