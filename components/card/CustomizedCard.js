@@ -13,20 +13,18 @@ function CustomizedCard({
   product,
   avatarSrc,
   title,
-  caption,
+  price,
   location
 }) {
 
   const renderImage = () => {
     if (!imageSrc)
       return null;
-
     return (
       <Block flex={0.7} style={styles.imageBlock}>
         <Image
           source={imageSrc}
-          style={styles.image}
-        />
+          style={styles.image}/>
       </Block>
     );
   };
@@ -42,32 +40,27 @@ function CustomizedCard({
   function renderAvatar() {
     if (!avatarSrc)
       return null;
-
     return (
       <Image
         source={avatarSrc}
-        style={styles.avatar}
-      />
+        style={styles.avatar}/>
     );
   }
 
   function renderLocation() {
     if (!location) return null;
-
     return (
       <Block row right>
         <Icon
           name="map-pin"
           family="feather"
           color={"gray"}
-          size={FONT_SIZE}
-        />
+          size={FONT_SIZE}/>
         <Text
           muted
           size={FONT_SIZE * 0.875}
           color={"gray"}
-          style={{ marginLeft: 16 * 0.25 }}
-        >
+          style={{ marginLeft: 16 * 0.25 }}>
           {location}
         </Text>
       </Block>
@@ -83,8 +76,7 @@ function CustomizedCard({
           <Block flex={1.7}>
             <Block style={styles.title}>
               <Text
-                size={FONT_SIZE * 0.875}
-              >
+                size={FONT_SIZE * 0.875}>
                 {" "} {title}
               </Text>
             </Block>
@@ -93,9 +85,8 @@ function CustomizedCard({
                 <Text
                   p
                   muted
-                  size={FONT_SIZE * 0.875}
-                >
-                  {" "} {caption}
+                  size={FONT_SIZE * 0.875}>
+                  {" "} {price}
                 </Text>
               </Block>
               {renderLocation()}

@@ -3,26 +3,26 @@ import {
   StyleSheet,
   ImageBackground,
   Dimensions,
-  StatusBar,
   KeyboardAvoidingView,
   Image,
   Keyboard,
-  Alert
+  Alert,
+  AsyncStorage
 } from "react-native";
-import { Block, Checkbox, Text, theme/*, Input*/ } from "galio-framework";
-
+import { Block, Text } from "galio-framework";
 import {
   Button,
   Icon,
   Input
 } from "../components";
-import { Images, argonTheme } from "../constants";
-import { TouchableOpacity, ScrollView } from "react-native-gesture-handler";
+import { 
+  Images, 
+  argonTheme 
+} from "../constants";
+import { ScrollView } from "react-native-gesture-handler";
 import Loader from '../components/Loader';
-import AuthAPI from '../api/AuthAPI';
-
+import Users from '../constants/User.js';
 const { width, height } = Dimensions.get("screen");
-
 const headerImg = require("../assets/imgs/headerLogin.png");
 
 class Login extends React.Component {
@@ -30,95 +30,116 @@ class Login extends React.Component {
     email: "",
     password: "",
     loading: false,
-    keyboardHeight: 0
+    keyboardHeight: 0,
+    loggedIn: false
   }
-
   constructor(props) {
     super(props);
-    this.authAPI = new AuthAPI();
     this.login = this.login.bind(this);
+    this.users = Users;
+    this._loadData = this._loadData.bind(this);
     this._keyboardDidShow = this._keyboardDidShow.bind(this);
   }
-
+  _loadData = async () => {
+    try {
+      this.currentUser = await AsyncStorage.getItem('currentUser').then(res => {
+        if (res)
+          this.setState({loggedIn: true})
+      }).catch(error => {})
+    } catch (error) {}
+    try {
+      this.users = await AsyncStorage.getItem('users');
+      this.users = JSON.parse(this.users);
+      if (this.users === null) {
+        this.users = Users;
+        await AsyncStorage.setItem('users', JSON.stringify(Users));
+      }
+    } catch (error) {
+      this.users = Users;
+      await AsyncStorage.setItem('users', JSON.stringify(Users));
+    }
+  }
   componentDidMount() {
+    this._loadData();
     this.keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       this._keyboardDidShow,
     );
   }
-
   componentWillUnmount() {
     this.keyboardDidShowListener.remove();
   }
-
   _keyboardDidShow(e) {
     this.setState({ keyboardHeight: e.endCoordinates.height });
   }
-
-  login() {
-    this.setState({ loading: true })
-    this.authAPI.login(this.state.email, this.state.password, (res) => {
-      this.setState({ loading: false })
-      if (res == true) {
-        this.props.navigation.navigate('Home')
-      }
-      else {
-        Alert.alert('Error', res,
-          [{ text: 'Ok' }])
-      }
-    })
+  setUser = async (id) => {
+    await AsyncStorage.setItem('currentUser', JSON.stringify(id));
   }
-
-  render() {
-    const { navigation } = this.props;
-    if (this.state.loading) {
-      var loader = <Loader />
+  login() {
+    this.setState({ loading: true });
+    for (let i = 0; i < this.users.length; ++i) {
+      let user = this.users[i];
+      if (this.state.email.trim() === user.email && this.state.password.trim() === user.password) {
+        this.setState({
+          loading: false,
+          email: '',
+          password: ''
+        });
+        this.setUser(user.id);
+        this.props.navigation.navigate('Home');
+        return;
+      }
     }
-
+    Alert.alert(
+        'Login unsuccessful',
+        'Wrong email or password. Please try again.',
+        [
+          {
+            text: 'OK',
+            onPress: () => {this.setState({loading: false})}
+          }
+        ]
+    );
+  }
+  render() {
+    // if (this.state.loggedIn) {
+    //   this.props.navigation.navigate('Home');
+    //   return null;
+    // }
+    if (this.state.loading)
+      var loader = <Loader/>
     return (
-      // <Block flex middle> 
       <Block flex middle >
-        {/* <StatusBar hidden /> */}
-
-        {/* <ImageBackground
-          // source={Images.GalaxyBackground} //Images.RegisterBackground
-          source={require("../assets/imgs/background2.gif")}
-          style={{ width, height, zIndex: 1 }}
-        > */}
           {loader}
           <Block flex={0.62} middle>
-            {/* <Block flex={1} top={true} style={{justifyContent:'flex-start'}}> */}
-            <ImageBackground source={headerImg} resizeMode='contain' style={styles.headerImage}>
+            <ImageBackground
+              source={headerImg} 
+              resizeMode='contain' 
+              style={styles.headerImage}>
               <Block flex middle>
-                <Image source={Images.petsImg} resizeMode='contain' style={{ marginTop: -50, width: '80%', height: '80%' }} />
+                <Image 
+                  source={Images.petsImg} 
+                  resizeMode='contain' 
+                  style={styles.petImage}/>
               </Block>
             </ImageBackground>
           </Block>
 
           <Block flex>
-            {/* <Block flex={0.15}>
-              <Text color="#E1E1E1" size={32} style={{ marginLeft: 15, fontWeight: 'bold'}}>
-                Welcome to PetWorld
-              </Text>
-            </Block> */}
-
             <Block flex={0.85} center>
               <KeyboardAvoidingView
                 behavior="padding"
-                keyboardVerticalOffset={200}
-              >
-                <ScrollView style={{ width: width }}>
-                  {/* <Block flex={0.15}>
-                    <Text color="#E1E1E1" size={30} style={{ marginLeft: 15, fontWeight: 'bold' }}>
-                      Welcome to PetWorld
-                    </Text>
-                  </Block> */}
-
-                  <Block center width={width * 0.9} style={{ marginTop: 20, marginBottom: 15 }}>
+                keyboardVerticalOffset={200}>
+                <ScrollView 
+                  style={{ width: width }}>
+                  <Block
+                    center width={width * 0.9} 
+                    style={{ marginTop: 20, marginBottom: 15 }}>
                     <Input
+                      style={styles.input}
                       borderless
                       placeholder="Email"
-                      onChangeText={(email) => { this.setState({ email }) }}
+                      onChangeText={email => this.setState({ email })}
                       value={this.state.email}
                       iconContent={
                         <Icon
@@ -126,43 +147,28 @@ class Login extends React.Component {
                           color={'grey'}
                           name="ic_mail_24px"
                           family="ArgonExtra"
-                          style={styles.inputIcons}
-                        />
-                      }
-                      //style={{ backgroundColor: '#333333' }}
-                      style={{ backgroundColor: 'rgba(214, 214, 214, 0.8)' }}
-                    />
+                          style={styles.inputIcons}/>
+                      }/>
                   </Block>
-                  <Block center width={width * 0.9}>
+                  <Block 
+                    center width={width * 0.9}>
                     <Input
+                      style={styles.input}
                       password
                       viewPass
                       borderless
                       placeholder="Password"
-                      onChangeText={(password) => { this.setState({ password }) }}
+                      onChangeText={password => this.setState({ password }) }
                       value={this.state.password}
                       iconContent={
                         <Icon
                           size={16}
-                          //color={argonTheme.COLORS.ICON}
                           color={'grey'}
                           name="padlock-unlocked"
                           family="ArgonExtra"
-                          style={styles.inputIcons}
-                        />
-                      }
-                      // style={{ backgroundColor: '#333333' }}
-                      style={{ backgroundColor: 'rgba(214, 214, 214, 0.8)' }}
-                    />
+                          style={styles.inputIcons}/>
+                      }/>
                   </Block>
-                  <TouchableOpacity onPress={() => navigation.navigate("ForgetPassword")}>
-                    <Text style={{
-                      color: argonTheme.COLORS.PRIMARY, fontSize: 14, textAlign: 'right',
-                      marginRight: width * 0.05
-                    }}>
-                      Forget Password?
-                    </Text>
-                  </TouchableOpacity>
 
                   <Block flex middle>
                     <Button color="primary" style={styles.loginButton} onPress={this.login}>
@@ -171,39 +177,28 @@ class Login extends React.Component {
                       </Text>
                     </Button>
                   </Block>
-
-                  <Block row flex center style={{ marginBottom: height * 0.05, marginTop: 30 }}>
-                    <Text size={14} color={argonTheme.COLORS.WHITE}>Don't have an account?</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-                      <Text style={{ color: argonTheme.COLORS.PRIMARY, fontSize: 14 }}>
-                        {"  "}Register now
-                    </Text>
-                    </TouchableOpacity>
-                  </Block>
                 </ScrollView>
               </KeyboardAvoidingView>
             </Block>
           </Block>
-
-        {/* </ImageBackground> */}
       </Block>
     );
   }
 }
-
 const styles = StyleSheet.create({
   headerImage: {
-    //width: '100%',
-    //height: undefined,
-    //aspectRatio: 1,
     width: width,
     height: height,
-    //marginTop: -10,
-    //scaleX: 1.2,
     justifyContent: 'flex-start',
     borderRadius: 4,
-    //elevation: 1,
-    //overflow: "hidden"
+  },
+  petImage: {
+    marginTop: -50,
+    width: '80%', 
+    height: '80%'
+  },
+  input: {
+    backgroundColor: 'rgba(214, 214, 214, 0.8)' 
   },
   registerContainer: {
     width: width * 0.9,  //0.9
@@ -257,5 +252,4 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   }
 });
-
 export default Login;
