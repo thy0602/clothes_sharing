@@ -10,7 +10,7 @@ import {
   Alert
 } from "react-native";
 import { Block, Checkbox, Text, theme/*, Input*/ } from "galio-framework";
-
+import firebase from '../firebase/FirebaseService.js';
 import {
   Button,
   Icon,
@@ -19,7 +19,6 @@ import {
 import { Images, argonTheme } from "../constants";
 import { TouchableOpacity, ScrollView } from "react-native-gesture-handler";
 import Loader from '../components/Loader';
-import AuthAPI from '../api/AuthAPI';
 
 const { width, height } = Dimensions.get("screen");
 
@@ -35,9 +34,8 @@ class Login extends React.Component {
 
   constructor(props) {
     super(props);
-    this.authAPI = new AuthAPI();
     this.login = this.login.bind(this);
-    this._keyboardDidShow = this._keyboardDidShow.bind(this);
+    this.register = this.register.bind(this);
   }
 
   componentDidMount() {
@@ -56,16 +54,29 @@ class Login extends React.Component {
   }
 
   login() {
-    this.setState({ loading: true })
-    this.authAPI.login(this.state.email, this.state.password, (res) => {
-      this.setState({ loading: false })
-      if (res == true) {
+    if (!this.state.email.trim() || !this.state.password.trim()) {
+      Alert.alert('Error', "Input fields can not be empty", [{text: 'Ok'}])
+      return;
+    }
+    this.setState({ loading: true });
+    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(res => {
+      if (res)
         this.props.navigation.navigate('Home')
-      }
-      else {
-        Alert.alert('Error', res,
-          [{ text: 'Ok' }])
-      }
+      else
+        Alert.alert('Login unsuccessful.', res, [{text: 'OK'}])
+    })
+  }
+
+  register() {
+    if(!this.state.email || !this.state.password){
+      Alert.alert('Error', "Input fields can not be empty", [{text: 'Ok'}])
+      return;
+    }
+    firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then(res => {
+      if (res)
+        this.props.navigation.navigate('Home')
+      else
+        Alert.alert('Register unsuccessful.', res, [{text: 'OK'}])
     })
   }
 
@@ -155,15 +166,6 @@ class Login extends React.Component {
                       style={{ backgroundColor: 'rgba(214, 214, 214, 0.8)' }}
                     />
                   </Block>
-                  <TouchableOpacity onPress={() => navigation.navigate("ForgetPassword")}>
-                    <Text style={{
-                      color: argonTheme.COLORS.PRIMARY, fontSize: 14, textAlign: 'right',
-                      marginRight: width * 0.05
-                    }}>
-                      Forget Password?
-                    </Text>
-                  </TouchableOpacity>
-
                   <Block flex middle>
                     <Button color="primary" style={styles.loginButton} onPress={this.login}>
                       <Text bold size={14} color={argonTheme.COLORS.WHITE}>
@@ -171,14 +173,12 @@ class Login extends React.Component {
                       </Text>
                     </Button>
                   </Block>
-
-                  <Block row flex center style={{ marginBottom: height * 0.05, marginTop: 30 }}>
-                    <Text size={14} color={argonTheme.COLORS.WHITE}>Don't have an account?</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-                      <Text style={{ color: argonTheme.COLORS.PRIMARY, fontSize: 14 }}>
-                        {"  "}Register now
-                    </Text>
-                    </TouchableOpacity>
+                  <Block flex middle>
+                    <Button color="primary" style={styles.loginButton} onPress={this.register}>
+                      <Text bold size={14} color={argonTheme.COLORS.WHITE}>
+                        Register
+                      </Text>
+                    </Button>
                   </Block>
                 </ScrollView>
               </KeyboardAvoidingView>

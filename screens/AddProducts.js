@@ -12,7 +12,7 @@ import { MaterialIcons, MaterialCommunityIcons, SimpleLineIcons, FontAwesome, An
 import DatePicker from 'react-native-datepicker';
 import { Dialog } from 'react-native-simple-dialogs';
 import * as ImagePicker from 'expo-image-picker';
-
+import firestore from '@react-native-firebase/firestore';
 import AuthAPI from '../api/AuthAPI';
 import PetAPI from '../api/PetAPI';
 
@@ -28,16 +28,10 @@ export default class AddProducts extends React.Component {
       weight: "",
       usedTime: "",
       priceItem: "",
-      // species: "",
-      // breed: "",
-      // weight: "",
-      // height: "",
-      // date: "",
       successDialogVisible: false,
       image: null,
     };
-    this.authAPI = new AuthAPI();
-    this.petAPI = new PetAPI();
+    this.addProduct = this.addProduct.bind(this);
   }
 
   componentDidMount() {
@@ -49,11 +43,6 @@ export default class AddProducts extends React.Component {
         weight: "",
         usedTime: "",
         priceItem: "",
-        // species: "",
-        // breed: "",
-        // weight: "",
-        // height: "",
-        // date: "",
         successDialogVisible: false,
       })
     })
@@ -118,51 +107,26 @@ export default class AddProducts extends React.Component {
     return true;
   }
 
-  createPet = async () => {
-    if (!this.validateInput()) {
-      return;
-    }
-
-    let customerId = await this.authAPI.retrieveCustomerId();
-
-    const { date } = this.state;
-    var d = date.split('-');
-    var mydate = new Date(parseInt(d[0]), parseInt(d[1]) - 1, parseInt(d[2]), 0, 0, 0, 0);
-
-    let pet = new Object({
+  addProduct() {
+    const newItem = {
       name: this.state.name,
-      weight: parseFloat(this.state.weight).toFixed(1),
-      height: parseFloat(this.state.height).toFixed(1),
-      species: this.state.species,
-      breed: this.state.breed,
-      customerId: customerId,
-      dateOfBirth: mydate
-    })
-
-    this.petAPI.createPet(pet, (res) => {
-      if (res) {
-        this.setState({
-          successDialogVisible: true,
-        });
-        setTimeout(() => {
-          this.setState({
-            successDialogVisible: false,
-          });
-          this.props.navigation.goBack();
-        }, 2000);
-      }
-      else {
-        Alert.alert('Error', "Server error",
-          [{ text: 'Ok' }])
-      }
-    })
+      size: this.state.size,
+      height: this.state.height,
+      weight: this.state.weight,
+      usedTime: this.state.usedTime,
+      priceItem: this.state.priceItem,
+      seller: firebase.auth().currentUser.id
+    }
+    firebase.collection('product').add(newItem).then(res => {
+      if (res)
+        Alert.alert('Add successful', 'New cloth item added successfully.', [{text: 'OK'}]);
+      else Alert.alert('Unsuccessful', 'New cloth item was not added. Please try again.', [{text: 'OK'}]);
+    }).then(() => this.props.navigation.goBack());
   }
 
   render() {
     var todayDate = new Date().toISOString().slice(0, 10);
-
     let { image } = this.state;
-
     return (
       <Block flex>
       {/* <ImageBackground source={require("../assets/imgs/background2.gif")} resizeMode='cover' style={{ flex: 1, width: '100%', height: '100%' }}> */}
@@ -312,7 +276,7 @@ export default class AddProducts extends React.Component {
                   </Text>
                 </Button> */}
                 <Button color="primary" style={styles.button}
-                  onPress={() => {}}
+                  onPress={this.addProduct}
                 >
                   <Text bold size={18} color={argonTheme.COLORS.WHITE}>
                     Add
