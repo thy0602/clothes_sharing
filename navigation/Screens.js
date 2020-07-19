@@ -10,6 +10,8 @@ import AuthLoadingScreen from "../screens/AuthLoadingScreen";
 import { fadeIn, fromLeft, fromRight } from 'react-navigation-transitions';
 // screens
 import Home from "../screens/Home";
+import MyWardrobe from "../screens/MyWardrobe";
+import MixAndMatch from "../screens/MixAndMatch";
 import MyProfile from "../screens/MyProfile";
 import Login from "../screens/Login";
 import Register from "../screens/Register";
@@ -29,7 +31,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 // import { createDrawerNavigator } from '@react-navigation/drawer';
 
 
-
 const HomeStack = createStackNavigator(
   {
     Home: {
@@ -46,6 +47,18 @@ const HomeStack = createStackNavigator(
     },
     Chat: {
       screen: Chat,
+      navigationOptions:{
+        header: null
+      }
+    },
+    MyWardrobe: {
+      screen: MyWardrobe,
+      navigationOptions:{
+        header: null
+      }
+    },
+    MixAndMatch: {
+      screen: MixAndMatch,
       navigationOptions:{
         header: null
       }
@@ -228,3 +241,4 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   }
 });
+

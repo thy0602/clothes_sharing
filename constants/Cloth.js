@@ -1,4 +1,4 @@
-export default Clothes = [
+let Clothes = [
     {
         name: "Áo sơ mi nữ xanh",
         size: 'M',
@@ -32,3 +32,5 @@ export default Clothes = [
         ]
     },
 ];
+
+export default Clothes;

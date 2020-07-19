@@ -7,7 +7,7 @@ let users = [
         email: 'pnmthy0602@gmail.com',
         address: '1A Le Dai Hanh',
         point: 30,
-        avatar: require("../assets/imgs/pikachu.jpg")
+        avatar: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/025.png"
     },
     {
         id: 2,

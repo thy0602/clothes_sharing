@@ -37,30 +37,9 @@ class Login extends React.Component {
     super(props);
     this.login = this.login.bind(this);
     this.users = Users;
-    this._loadData = this._loadData.bind(this);
     this._keyboardDidShow = this._keyboardDidShow.bind(this);
   }
-  _loadData = async () => {
-    try {
-      this.currentUser = await AsyncStorage.getItem('currentUser').then(res => {
-        if (res)
-          this.setState({loggedIn: true})
-      }).catch(error => {})
-    } catch (error) {}
-    try {
-      this.users = await AsyncStorage.getItem('users');
-      this.users = JSON.parse(this.users);
-      if (this.users === null) {
-        this.users = Users;
-        await AsyncStorage.setItem('users', JSON.stringify(Users));
-      }
-    } catch (error) {
-      this.users = Users;
-      await AsyncStorage.setItem('users', JSON.stringify(Users));
-    }
-  }
   componentDidMount() {
-    this._loadData();
     this.keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       this._keyboardDidShow,
@@ -106,6 +85,9 @@ class Login extends React.Component {
     //   this.props.navigation.navigate('Home');
     //   return null;
     // }
+    // AsyncStorage.getAllKeys()
+    //     .then(keys => AsyncStorage.multiRemove(keys))
+    //     .then(() => alert('success'));
     if (this.state.loading)
       var loader = <Loader/>
     return (

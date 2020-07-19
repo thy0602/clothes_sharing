@@ -3,55 +3,30 @@ import {
   StyleSheet,
   ImageBackground,
   Dimensions,
-  StatusBar,
-  KeyboardAvoidingView,
-  Picker,
   View,
   ScrollView,
   Image,
   TouchableOpacity,
   AsyncStorage
 } from "react-native";
-import { Block, Text, theme, Card } from "galio-framework";
-import { argonTheme } from "../constants";
+import { Block, Text} from "galio-framework";
 import { Button, Icon, Input/*, CardGalio*/ } from "../components";
-import { MaterialIcons, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
-import ToggleSwitch from 'toggle-switch-react-native';
-import Popup from '../components/Popup';
-import Loader from '../components/Loader';
-import { Avatar } from "react-native-elements";
-import NotiCard from "../components/card/NotiCard";
 import CustomizedCard from "../components/card/CustomizedCard";
-import AuthAPI from "../api/AuthAPI";
-import PetAPI from "../api/PetAPI";
-import whitedress from "../assets/imgs/white-dress.jpg";
 import Users from '../constants/User.js'
+import Users from '.../constants/Users.js'
 import Clothes from '../constants/Cloth.js';
 const { width, height } = Dimensions.get("screen");
-const imageClothes = require("../assets/imgs/white-dress.jpg")
 
-class Home extends React.Component {
-  state = {
-    popUpDialog: false,
-    petList: [],
-    loading: true,
-  }
+class MyWardrobe extends React.Component {
   constructor(props) {
     super(props);
     this.clothes = Clothes;
-    this._loadData = this._loadData.bind(this);
-    this.goClothesDetails = this.goClothesDetails.bind(this);
-    this.findSellerFromId = this.findSellerFromId.bind(this);
-    this.newsfeed = this.newsfeed.bind(this);
-    this.toMixAndMatch = this.toMixAndMatch.bind(this);
-    this.toMyWardrobe = this.toMyWardrobe.bind(this);
   }
   componentDidMount() {
     this._loadData();
   }
   _loadData = async () => {
     await AsyncStorage.getItem('currentUser').then(res => this.currentUser = JSON.parse(res));
-    //this.currentUser = 2;
     try {
       await AsyncStorage.getItem('clothes').then(res => {
         this.clothes = JSON.parse(res);
@@ -63,9 +38,6 @@ class Home extends React.Component {
       await AsyncStorage.setItem('clothes', JSON.stringify(Clothes));
     }
   }
-  goClothesDetails(item){
-    this.props.navigation.navigate('ClothesDetails',{pet: item});  
-  }
   findSellerFromId(seller) {
     let users = Users
     for (let i = 0; i < users.length; ++i) {
@@ -74,13 +46,12 @@ class Home extends React.Component {
     }
   }
   newsfeed() {
-    //this.currentUser = 2
     let nf = [];
     for (let i = 0; i < this.clothes.length; ++i) {
       let cloth = this.clothes[i];
-      if (cloth.seller !== this.currentUser && cloth.available) {
-        let mySeller = this.findSellerFromId(cloth.seller);
+      if (cloth.seller === 2) {
         let view = (
+        <View>
           <TouchableOpacity 
             key={`image${i}`}
             onPress={() => {this.goClothesDetails(cloth)}}>
@@ -94,17 +65,14 @@ class Home extends React.Component {
                 location={mySeller.address}/>
             </Block>
           </TouchableOpacity>
+          <Button title={cloth.available ? 'Invalidate' : 'Validate'}
+                backgroundColor={cloth.available ? 'green' : 'gray'}/>
+        </View>
         )
         nf.push(view);
       }
     }
     return nf;
-  }
-  toMixAndMatch(item) {
-    this.props.navigation.navigate('MixAndMatch');
-  }
-  toMyWardrobe(item) {
-    this.props.navigation.navigate('MyWardrobe');
   }
   render() {
     const { navigation } = this.props;
@@ -120,38 +88,13 @@ class Home extends React.Component {
               color="#ffffff" 
               size={30} 
               style={{fontFamily: 'ITCKRIST'}}>
-              Sharing Clothes
+              My Wardrobe
             </Text>
           </View>
         </ImageBackground>
-        
+
         <ScrollView
           style={{ flex: 1, width: width}}>
-            <Block style={styles.buttonRow}>
-              <Button style={styles.button} onPress={this.toMixAndMatch}>
-                <Text bold size={12} color={"black"}>
-                  Mix And Match
-                </Text>
-              </Button>
-              <Button style={styles.button} onPress={this.toMyWardrobe}>
-                <Text bold size={12} color={"black"}>
-                  My Wardrobe
-                </Text>
-              </Button>
-            </Block>
-            {/* <View style={styles.containerButton}
-            height={60}>
-          <View style={styles.buttonContainer}>
-            <Button title="Mix and Match"
-                textColor='white'
-                onPress={this.toMixAndMatch}/>
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title="My Wardrobe"
-                textColor='white'
-                onPress={this.toMyWardrobe}/>
-          </View>
-        </View> */}
             {this.newsfeed()}
         </ScrollView>
       </Block>
@@ -160,15 +103,6 @@ class Home extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  containerButton: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonContainer: {
-    flex: 1,
-  },
   home: {
     width: width,
     paddingBottom: 20
@@ -275,24 +209,7 @@ const styles = StyleSheet.create({
     width: 0.9*width,
     height: 200,
     // backgroundColor: 'blue'
-  },
-
-  // buttonRow: {
-  //   width: 280, 
-  //   flexDirection: 'row', 
-  //   justifyContent: 'space-between',
-  //   alignSelf: 'center',
-  //   marginTop: 20,
-  //   alignItems: 'center',
-  //   marginBottom: 20
-  // }, 
-  // button: {
-  //   width: 100,
-  //   height: 30,
-  //   borderRadius: 10,
-  //   backgroundColor: "#a0a7fa"
-  // },
-
+  }
 });
 
-export default Home;
+export default MyWardrobe;
