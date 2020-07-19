@@ -1,5 +1,6 @@
 let Clothes = [
     {
+        id: 1,
         name: "Áo sơ mi nữ xanh",
         size: 'M',
         height: "1m6",
@@ -13,9 +14,11 @@ let Clothes = [
             "shirt",
             "blue",
             "work",
-        ]
+        ],
+        main_color: "189.0|127.0|152.0"
     },
     {
+        id: 2,
         name: "Váy trắng",
         size: 'M',
         height: "1m6",
@@ -29,7 +32,8 @@ let Clothes = [
             "skirt",
             "white",
             "short",
-        ]
+        ], 
+        main_color: "189.0|127.0|152.0"
     },
 ];
 
