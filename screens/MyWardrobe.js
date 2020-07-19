@@ -13,7 +13,6 @@ import { Block, Text} from "galio-framework";
 import { Button, Icon, Input/*, CardGalio*/ } from "../components";
 import CustomizedCard from "../components/card/CustomizedCard";
 import Users from '../constants/User.js'
-import Users from '.../constants/Users.js'
 import Clothes from '../constants/Cloth.js';
 const { width, height } = Dimensions.get("screen");
 
@@ -37,6 +36,7 @@ class MyWardrobe extends React.Component {
       this.clothes = Clothes;
       await AsyncStorage.setItem('clothes', JSON.stringify(Clothes));
     }
+    this.currentUser=2;
   }
   findSellerFromId(seller) {
     let users = Users
@@ -49,7 +49,8 @@ class MyWardrobe extends React.Component {
     let nf = [];
     for (let i = 0; i < this.clothes.length; ++i) {
       let cloth = this.clothes[i];
-      if (cloth.seller === 2) {
+      let mySeller = this.findSellerFromId(this.currentUser)
+      if (cloth.seller === this.currentUser) {
         let view = (
         <View>
           <TouchableOpacity 

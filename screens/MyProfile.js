@@ -18,7 +18,7 @@ import Popup from '../components/Popup';
 import AuthAPI from '../api/AuthAPI'
 import UserProfileAPI from '../api/UserProfileAPI'
 import StarRating from 'react-native-star-rating';
-
+import Users from '../constants/User.js';
 const { width, height } = Dimensions.get("screen");
 
 const nameItem = "White dress";
@@ -31,6 +31,9 @@ const priceItem = "100,000 VND"
 const nameSellerItem = "Phạm Nguyên Minh Thy"
 const phoneSellerItem = "0928299998"
 const addressSellerItem = "15 Nguyễn Trãi, phường 14, Q.5, TP.HCM"
+
+const FONT_SIZE = 15;
+const BASE = 16;
 
 class MyProfile extends React.Component {
   state = {
@@ -47,124 +50,44 @@ class MyProfile extends React.Component {
 
   constructor(props) {
     super(props);
+    this.currentUser = 2;
+    this.users = Users;
     this.logout = this.logout.bind(this);
     this.clickLogout = this.clickLogout.bind(this);
-    this.authAPI = new AuthAPI();
-    this.userProfileAPI = new UserProfileAPI();
     this.retrieveData = this.retrieveData.bind(this);
-    this.handleUpdateInfo = this.handleUpdateInfo.bind(this);
-    this.clickUpdate = this.clickUpdate.bind(this);
-    this.handleChoice = this.handleChoice.bind(this);
-    this.validateInput = this.validateInput.bind(this);
-    this.customer = new Object();
-    this._keyboardDidShow = this._keyboardDidShow.bind(this);
   }
 
-  componentDidMount() {
-    this.didFocus = this.props.navigation.addListener('willFocus', () => {
-      this.setState({ loading: true }, () => {
-        this.retrieveData();
-      })
-    })
-    this.keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      this._keyboardDidShow,
-    );
+  retrieveData(userId) {
+    for (let i = 0; i < this.users.length; ++i) {
+      if (this.users[i] === userId) {
+        this.user = this.users[i];
+        return;
+      }
+    }
   }
 
-  componentWillUnmount() {
-    this.didFocus.remove();
-    this.keyboardDidShowListener.remove();
-  }
-
-  _keyboardDidShow(e){
-    this.setState({keyboardHeight: e.endCoordinates.height});
-  }
-
-  async retrieveData(user) {
-    let customerId = await this.authAPI.retrieveCustomerId();
-
-    this.userProfileAPI.getUserById(customerId, (userProfile) => {
-      this.customer = userProfile;
-      this.setState({
-        firstName: userProfile.firstName,
-        lastName: userProfile.lastName,
-        email: userProfile.email,
-        mobile: userProfile.mobile
-      })
-    })
-  }
-
-  async logout() {
-    await this.authAPI.clearToken();
+  logout() {
     this.props.navigation.navigate('Account');
   }
 
   clickLogout() {
-    this.setState({ popUpDialog: true, question: 'Do you want to logout?', popUpType: 1 })
-  }
-
-  clickUpdate() {
-    this.setState({ popUpDialog: true, question: 'Do you want to update profile?', popUpType: 2 })
-  }
-
-  handleUpdateInfo() {
-    if (!this.validateInput()) {
-      return;
-    }
-    this.customer.firstName = this.state.firstName;
-    this.customer.lastName = this.state.lastName;
-    this.customer.mobile = this.state.mobile;
-    this.userProfileAPI.updateUserById(this.customer, this.customer._id, (res) => {
-      if (res == true) {
-        Alert.alert('Successfully', "Your profile is updated successfully!",
-          [{ text: 'OK' }]);
-        this.setState({ edit: false })
+    Alert.alert('Are you sure?', 'Do you want to log out?', [
+      {
+        text: 'OK',
+        onPress: this.logout
+      },
+      {
+        text: 'Cancel'
       }
-    })
-  }
-
-  validateInput() {
-    if (!this.state.mobile || !this.state.firstName || !this.state.lastName) {
-      Alert.alert('Error', "Input field can not be empty",
-        [{ text: 'OK' }])
-      return false;
-    }
-    return true;
-  }
-
-  handleChoice(bool) {
-    this.setState({ popUpDialog: false })
-    if (bool) {
-      if (this.state.popUpType == 2) {
-        this.handleUpdateInfo();
-      }
-      else if (this.state.popUpType == 1) {
-        this.logout();
-      }
-    }
+    ]);
   }
 
   render() {
     const { navigation } = this.props;
 
-    if (this.state.edit) {
-      var updateInfo =
-        <Button style={styles.loginButton} onPress={this.clickUpdate}>
-          <Text bold size={16} color={argonTheme.COLORS.WHITE}>
-            Update Info
-        </Text>
-        </Button>
-    }
-    else {
-      updateInfo = null
-    }
-
     return (
       <Block flex center style={styles.home}>
-
-          <Popup visible={this.state.popUpDialog} choice={this.handleChoice} question={this.state.question} />
-
+          
           <ImageBackground source={require("../assets/imgs/headerBooking.png")} resizeMode='stretch' style={styles.headerImage}>
             <View style={styles.textHeader}>
               <Text color="#ffffff" size={30} style={{fontFamily: 'ITCKRIST'}} >
@@ -229,7 +152,6 @@ class MyProfile extends React.Component {
             </Block>
 
             <Block flex={0.1} middle style={{ marginBottom: height * 0.1 }}>
-              {updateInfo}
               <Button style={styles.passwordBtn} onPress={(event) => { this.clickLogout(event) }}>
                 <Text bold size={16} color={argonTheme.COLORS.GREY}>
                   Logout
@@ -253,6 +175,11 @@ const styles = StyleSheet.create({
   headerImage: {
     width: width,
     height: 80
+  },
+  avatar: {
+    width: BASE * 2.5,
+    height: BASE * 2.5,
+    borderRadius: BASE * 1.25,
   },
   textHeader: {
     alignItems: 'center', 
