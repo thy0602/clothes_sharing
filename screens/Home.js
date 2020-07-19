@@ -119,7 +119,7 @@ class Home extends React.Component {
             <Text
               color="#ffffff" 
               size={30} 
-              style={{fontFamily: 'ITCKRIST'}}>
+              style={{fontFamily: 'Roboto'}}>
               Sharing Clothes
             </Text>
           </View>

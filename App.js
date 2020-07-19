@@ -1,103 +1,86 @@
-import React, {useEffect} from 'react';
-import { Image, NetInfo, Alert, Platform, BackHandler, StatusBar } from 'react-native';
-import { AppLoading } from 'expo';
-import { Asset } from 'expo-asset';
-import { Block, GalioProvider } from 'galio-framework';
-import * as Font from 'expo-font';
-import Screens from './navigation/Screens';
-import { Images, articles, argonTheme } from './constants';
-import { Notifications } from 'expo';
-// cache app images
-const assetImages = [
-  Images.Onboarding,
-  Images.LogoOnboarding,
-  Images.Logo,
-  Images.Pro,
-  Images.ArgonLogo,
-  Images.iOSLogo,
-  Images.androidLogo
-];
-
-// cache product images
-articles.map(article => assetImages.push(article.image));
-
-function cacheImages(images) {
-  return images.map(image => {
-    if (typeof image === 'string') {
-      return Image.prefetch(image);
-    } else {
-      return Asset.fromModule(image).downloadAsync();
-    }
-  });
-}
-
-export default class App extends React.Component {
-  state = {
-    isLoadingComplete: false,
-    internetConnection: false,
-    userToken: false
-  }
-
-  componentDidMount(){
-    this.CheckConnectivity();
-    this._notificationSubscription = Notifications.addListener(this._handleNotification);
-  }
-
-  CheckConnectivity(){
-    // For Android devices
-    if (Platform.OS === "android") {
-      NetInfo.isConnected.fetch().then(isConnected => {
-        if (isConnected) {
-          this.setState({internetConnection: true})
-        } else {
-          Alert.alert('Internet connection', 'Please connect to the Internet!', 
-          [{text: 'Ok', onPress: () => {BackHandler.exitApp()}}],
-          { cancelable: false });
-        }
-      });
-    }
-  };
-
+import React, { Component } from "react";
+import {
+  StyleSheet,
+  View,
+  Image,
+  ImageBackground,
+  Text,
+  TouchableOpacity
+} from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import Screens from './navigation/Screens.js';
+import Block from "galio-framework"
+class App extends React.Component {
   render() {
-    if(!this.state.isLoadingComplete || !this.state.internetConnection) {
-      return (
-        <AppLoading
-          startAsync={this._loadResourcesAsync}
-          onError={this._handleLoadingError}
-          onFinish={this._handleFinishLoading}
-        />
-      );
-    } else {
-      return (
-        <GalioProvider theme={argonTheme} >
-          <Block flex style={{paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0}}>
-            <Screens />
-          </Block>
-        </GalioProvider>
-      );
-    }
+    return <Screens/>
   }
-
-  _loadResourcesAsync = async () => {
-    await Font.loadAsync({
-      'opensans': require('./assets/font/opensans.ttf'),
-      'ITCKRIST': require('./assets/font/ITCKRIST.ttf')
-    })
-    return Promise.all([
-      ...cacheImages(assetImages),
-    ]);
-  };
-
-  _handleLoadingError = error => {
-    // In this case, you might want to report the error to your error
-    // reporting service, for example Sentry
-    console.warn(error);
-  };
-
-  _handleFinishLoading = () => {
-    this.setState({ isLoadingComplete: true });
-  };
-
-  _handleNotification = notification => {
-  };
 }
+
+const styles = StyleSheet.create({
+  cont: {
+    marginTop: 200,
+    alignSelf:'center',
+    flex:0.5
+  },
+  container: {
+    flex: 1
+  },
+  image: {
+    height: 500,
+    marginTop: 40
+  },
+  image_imageStyle: {},
+  image2: {
+    flexDirection: 'row',
+    top: 0,
+    left: 44,
+    width: 147,
+    height: 147,
+    position: "absolute"
+  },
+  loremIpsum: {
+    top: 118,
+    left: 0,
+    position: "absolute",
+    fontFamily: "Roboto",
+    color: "#121212",
+    fontSize: 14,
+    flexDirection: 'row',
+  },
+  image2Stack: {
+    width: 236,
+    height: 147,
+    marginTop: 42,
+    marginLeft: 73
+  },
+  image2StackFiller: {
+    flex: 1
+  },
+  button: {
+    alignItems:'center',
+    alignContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+    width: 141,
+    height: 48,
+    backgroundColor: "rgba(255,255,255,1)",
+    borderWidth: 1,
+    borderColor: "#000000"
+  },
+  button1: {
+    width: 141,
+    height: 48,
+    backgroundColor: "rgba(0,0,0,1)",
+    marginLeft: 15
+  },
+  buttonRow: {
+    height: 48,
+    flexDirection: "row",
+    alignItems: "flex-end",
+    marginBottom: 72,
+    marginLeft: 46,
+    marginRight: 35
+  }
+});
+
+export default App;

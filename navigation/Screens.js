@@ -26,9 +26,7 @@ import Chat from "../screens/Chat";
 const { width, height } = Dimensions.get('screen');
 // drawer
 import { MaterialIcons } from '@expo/vector-icons';
-// import HeaderDrawer from "../components/HeaderDrawer"
-// import { createDrawerNavigator } from 'react-navigation-drawer';
-// import { createDrawerNavigator } from '@react-navigation/drawer';
+import App from '../App';
 
 
 const HomeStack = createStackNavigator(

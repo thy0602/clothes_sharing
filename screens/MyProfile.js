@@ -1,75 +1,24 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  ImageBackground,
-  Dimensions,
-  Keyboard,
-  KeyboardAvoidingView,
-  Alert,
-  View,
-  ScrollView
-} from "react-native";
-import { Block, Text, theme } from "galio-framework";
-import { argonTheme } from "../constants";
-import { Button, Icon, Input } from "../components";
-import { MaterialIcons, MaterialCommunityIcons, FontAwesome, Ionicons } from '@expo/vector-icons';
-import ToggleSwitch from 'toggle-switch-react-native';
-import Popup from '../components/Popup';
-import AuthAPI from '../api/AuthAPI'
-import UserProfileAPI from '../api/UserProfileAPI'
-import StarRating from 'react-native-star-rating';
+import React, { Component } from "react";
+import { StyleSheet, View, Image, Text, TouchableOpacity } from "react-native";
 import Users from '../constants/User.js';
-const { width, height } = Dimensions.get("screen");
-
-const nameItem = "White dress";
-const sizeItem = "M";
-const heightItem = "1m5 - 1m6"
-const weightItem = "45-55 kg"
-const usedTimeItem = "2 years"
-const priceItem = "100,000 VND"
-
-const nameSellerItem = "Phạm Nguyên Minh Thy"
-const phoneSellerItem = "0928299998"
-const addressSellerItem = "15 Nguyễn Trãi, phường 14, Q.5, TP.HCM"
-
-const FONT_SIZE = 15;
-const BASE = 16;
 
 class MyProfile extends React.Component {
-  state = {
-    edit: false,
-    popUpDialog: false,
-    firstName: "",
-    email: "",
-    lastName: "",
-    mobile: "",
-    question: "",
-    popUpType: 0,
-    keyboardHeight: 0
-  }
-
   constructor(props) {
     super(props);
     this.currentUser = 2;
     this.users = Users;
     this.logout = this.logout.bind(this);
     this.clickLogout = this.clickLogout.bind(this);
-    this.retrieveData = this.retrieveData.bind(this);
-  }
-
-  retrieveData(userId) {
     for (let i = 0; i < this.users.length; ++i) {
-      if (this.users[i] === userId) {
+      if (this.users[i].id === this.currentUser) {
         this.user = this.users[i];
-        return;
+        break;
       }
     }
   }
-
   logout() {
     this.props.navigation.navigate('Account');
   }
-
   clickLogout() {
     Alert.alert('Are you sure?', 'Do you want to log out?', [
       {
@@ -81,226 +30,154 @@ class MyProfile extends React.Component {
       }
     ]);
   }
-
   render() {
-    const { navigation } = this.props;
-
     return (
-      <Block flex center style={styles.home}>
-          
-          <ImageBackground source={require("../assets/imgs/headerBooking.png")} resizeMode='stretch' style={styles.headerImage}>
-            <View style={styles.textHeader}>
-              <Text color="#ffffff" size={30} style={{fontFamily: 'ITCKRIST'}} >
-                Your Profile
-              </Text>
+      <View style={styles.container}>
+        <Image
+          source={{uri: this.user.avatar}}
+          resizeMode="contain"
+          style={styles.image}
+        ></Image>
+        <Text style={styles.loremIpsum}>{this.user.address}</Text>
+        <Text style={styles.nguyenNgocBangTam}>{this.user.name}</Text>
+        <View style={styles.groupStackStack}>
+          <View style={styles.groupStack}>
+            <View style={styles.group}>
+              <Text style={styles.phone}>Phone</Text>
+              <Text style={styles.loremIpsum2}>{this.user.phone}</Text>
+              <Text style={styles.email}>Email</Text>
+              <Text style={styles.loremIpsum4}></Text>
+              <Text style={styles.sharingPoints}>Sharing points:</Text>
             </View>
-          </ImageBackground>
-
-          <ScrollView style={{marginTop: 5}}>
-
-            <Block flex={1} style={styles.booking}>
-              <Text style={styles.headerTxt}>Your information</Text>
-              <View style={styles.detailInfo}>
-                <View style={styles.row}>
-                  <Text style={styles.field}>Name:
-                      <Text style={styles.value}> {nameSellerItem}</Text>
-                  </Text>
-                </View>
-
-                <View style={styles.row}>
-                  <Text style={styles.field}>Phone number:
-                      <Text style={styles.value}> {phoneSellerItem}</Text>
-                  </Text>
-                </View>
-
-                <View style={styles.row}>
-                  <Text style={styles.field}>Email:
-                      <Text style={styles.value}> {'pnmthy0602@gmail.com'}</Text>
-                  </Text>
-                </View>
-
-                <View style={styles.row}>
-                  <Text style={styles.field}>Address:
-                      <Text style={styles.value}> {addressSellerItem}</Text>
-                  </Text>
-                </View>
-
-                <View style={styles.row}>
-                  <Text style={styles.field}>Sharing point:
-                      <Text style={styles.value}> {"40"}</Text>
-                  </Text>
-                </View>
-
-                <Text style={styles.headerTxt}>Reliability</Text>
-
-                <View style={{alignItems: 'center'}}>
-                  <StarRating
-                    name="small-rating" 
-                    caption="Small!"
-                    disabled={true}
-                    maxStars={5}
-                    rating={3.5}
-                    starSize={30}
-                    // rating={this.state.starCount}
-                    // selectedStar={(rating) => this.onStarRatingPress(rating)}
-                    fullStarColor={'yellow'}
-                  />
-                </View>
-
-                <Text> {'\n'} </Text>
-              </View>
-            </Block>
-
-            <Block flex={0.1} middle style={{ marginBottom: height * 0.1 }}>
-              <Button style={styles.passwordBtn} onPress={(event) => { this.clickLogout(event) }}>
-                <Text bold size={16} color={argonTheme.COLORS.GREY}>
-                  Logout
-                </Text>
-              </Button>
-            </Block>
-          </ScrollView>
-
-          <Ionicons name='ios-add-circle' size={60} color='#511efa' style={styles.addIcon} 
-                    onPress={() => this.props.navigation.navigate('AddProducts')}/>
-      </Block>
-    );
-  }
+            <Text style={styles.loremIpsum3}>{this.user.email}</Text>
+          </View>
+          <Text style={styles.loremIpsum5}>{this.user.point}</Text>
+        </View>
+        <TouchableOpacity style={styles.button}
+                    onPress={() => this.props.navigation.navigate('AddProducts')}>
+                      <Text>ADD ITEM</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.button1}
+                    onPress={this.clickLogout}><Text>LOGOUT</Text></TouchableOpacity>
+      </View>
+    )
+  };
 }
 
 const styles = StyleSheet.create({
-  home: {
-    width: width,
-    paddingBottom: 20
+  container: {
+    flex: 1
   },
-  headerImage: {
-    width: width,
-    height: 80
+  image: {
+    width: 200,
+    height: 200,
+    marginTop: 95,
+    marginLeft: 88
   },
-  avatar: {
-    width: BASE * 2.5,
-    height: BASE * 2.5,
-    borderRadius: BASE * 1.25,
+  loremIpsum: {
+    fontFamily: "Roboto",
+    color: "#121212",
+    opacity: 0.59,
+    marginTop: 50,
+    marginLeft: 111
   },
-  textHeader: {
-    alignItems: 'center', 
-    marginTop: 7
-  },
-  // headerImage: {
-  //   width: width,
-  //   height: 90,
-  //   justifyContent: 'flex-start',
-  //   borderRadius: 4,
-  //   position: 'absolute',
-  // },
-  registerContainer: {
-    width: width * 0.9,  //0.9
-    height: height * 0.78,
-    backgroundColor: "#05060A", //#F4F5F7
-    borderRadius: 4,
-    shadowColor: argonTheme.COLORS.BLACK,
-    shadowOffset: {
-      width: 0,
-      height: 4
-    },
-    shadowRadius: 8,
-    shadowOpacity: 0.1,
-    elevation: 1,
-    overflow: "hidden"
-  },
-  inputIcons: {
-    marginRight: 12,
-  },
-  logoutIcon: {
-    color: 'red',
-    fontWeight: '200',
-  },
-  action: {
-    width: "90%",
-    alignSelf: 'center',
-    marginTop: 10
-  },
-  logoutTxt: {
-    color: 'red',
-    marginLeft: 5
-  },
-  editIcon: {
-    color: 'white',
-    fontWeight: '200',
-    textAlign: 'left'
-  },
-  editTxt: {
-    color: 'black',
-    marginLeft: 5,
-    textAlign: 'left'
-  },
-  passwordBtn: {
-    marginTop: 15,
-    width: 60,
-    height: 30,
-    backgroundColor: 'rgba(128, 128, 192, 0.8)'
-  },
-  picker: {
-    width: '100%',
-    paddingBottom: 0,
-    backgroundColor: 'transparent',
-    paddingLeft: 0,
-    transform: [{ scaleX: 0.77 }, { scaleY: 0.77 }],
-    position: 'absolute',
-    color: "#cccccc"
-  },
-
-
-
-  //New
-  imageBlock: {
-    backgroundColor: "rgba(45, 45, 45, 0.95)",
-    borderRadius: 15,
-    width: "95%",
-    // paddingHorizontal: 20,
-    marginTop: 5,
-    marginBottom: 20,
-    alignSelf: 'center'
-  },
-  booking: {
-    backgroundColor: "rgba(224, 224, 224, 1)",
-    borderRadius: 15,
-    width: "95%",
-    paddingHorizontal: 20,
-    marginTop: 5,
-    marginBottom: 20,
-    alignSelf: 'center'
-  },
-  headerTxt: {
-    fontFamily: "opensans",
+  nguyenNgocBangTam: {
+    fontFamily: "Roboto",
+    color: "#121212",
     fontSize: 25,
-    textAlign: 'center',
-    marginTop: 20,
-    fontWeight: "400",
-    color: 'black',
+    marginTop: -59,
+    marginLeft: 54
   },
-  row: {
-    textAlign: "left",
-    width: "100%",
-    marginTop: 10,
+  group: {
+    top: 0,
+    left: 0,
+    width: 96,
+    height: 161,
+    position: "absolute",
+    justifyContent: "space-between"
   },
-  detailInfo: {
-    width: "100%",
-    left: 0
+  phone: {
+    fontFamily: "Roboto",
+    color: "#121212"
   },
-  field: {
-    fontWeight: '500',
-    fontFamily: 'opensans',
-    fontSize: 17,
-    color: 'black'
+  loremIpsum2: {
+    top: 22,
+    left: 0,
+    position: "absolute",
+    fontFamily: "Roboto",
+    color: "#121212"
   },
-
-  //New
-  addIcon: {
-    alignSelf: 'flex-end',
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
+  email: {
+    fontFamily: "Roboto",
+    color: "#121212"
   },
+  loremIpsum4: {
+    top: 101,
+    left: 58,
+    position: "absolute",
+    fontFamily: "Roboto",
+    color: "#121212"
+  },
+  sharingPoints: {
+    fontFamily: "Roboto",
+    color: "#121212"
+  },
+  loremIpsum3: {
+    top: 93,
+    left: 0,
+    position: "absolute",
+    fontFamily: "Roboto",
+    color: "#121212"
+  },
+  groupStack: {
+    top: 0,
+    left: 0,
+    width: 217,
+    height: 161,
+    position: "absolute"
+  },
+  loremIpsum5: {
+    top: 143,
+    left: 100,
+    position: "absolute",
+    fontFamily: "Roboto",
+    color: "#121212"
+  },
+  groupStackStack: {
+    width: 217,
+    height: 161,
+    marginTop: 59,
+    marginLeft: 37
+  },
+  button: {
+    width: 268,
+    height: 43,
+    backgroundColor: "rgba(0,0,0,1)",
+    shadowColor: "rgba(0,0,0,1)",
+    shadowOffset: {
+      width: 3,
+      height: 3
+    },
+    elevation: 5,
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    marginTop: 44,
+    marginLeft: 54
+  },
+  button1: {
+    width: 268,
+    height: 43,
+    backgroundColor: "rgba(0,0,0,1)",
+    shadowColor: "rgba(0,0,0,1)",
+    shadowOffset: {
+      width: 3,
+      height: 3
+    },
+    elevation: 5,
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    marginTop: 25,
+    marginLeft: 54
+  }
 });
 
 export default MyProfile;

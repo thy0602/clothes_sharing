@@ -119,7 +119,7 @@ export default class EventDetails extends React.Component {
               onPress={() => this.props.navigation.goBack()} />
           </Block>
           <View style={styles.textHeader}>
-            <Text color="#ffffff" size={30} style={{ fontFamily: 'ITCKRIST' }} >
+            <Text color="#ffffff" size={30} style={{ fontFamily: 'Roboto' }} >
               Event Details
             </Text>
           </View>

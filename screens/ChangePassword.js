@@ -105,7 +105,7 @@ class ChangePassword extends React.Component {
             <ImageBackground source={require("../assets/imgs/headerPwd.png")} resizeMode='contain' style={styles.headerImage} />
             <MaterialIcons name='keyboard-backspace' size={40} style={styles.backBtn}
               onPress={() => navigation.navigate("Profile")} />
-            <Text color="#ffffff" size={33} style={{ marginLeft: 15, fontFamily: 'ITCKRIST', marginTop: 20 }}>
+            <Text color="#ffffff" size={33} style={{ marginLeft: 15, fontFamily: 'Roboto', marginTop: 20 }}>
               Change Password
           </Text>
           </Block>

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "PetWorldCustomer",
-    "slug": "petworldcustomer",
+    "name": "SeAo",
+    "slug": "seao",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": [
@@ -12,9 +12,9 @@
     "orientation": "portrait",
     "icon": "./assets/imgs/logo.png",
     "splash": {
-      "image": "./assets/imgs/loading.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#33333"
+      "image": "./assets/imgs/main-menu.jpg",
+      "resizeMode": "contain",
+      "backgroundColor": "#f0bd6c"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -27,8 +27,8 @@
     },
     "android": {
       "googleServicesFile": "./google-services.json",
-      "package": "com.petapp"
+      "package": "com.seao"
     },
-    "description": "PetWorld platform for customers to book services and manage their pets"
+    "description": "SheCodesHackathon Project of Team Cactus"
   }
 }
