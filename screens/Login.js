@@ -80,7 +80,7 @@ class Login extends React.Component {
           value={this.state.password}></TextInput>
         <TouchableOpacity style={styles.button}
           onPress={this.login}>
-            <Text>Next</Text>
+            <Text style={{color: "white"}}>Next</Text>
           </TouchableOpacity>
       </View>
     );
@@ -123,7 +123,8 @@ const styles = StyleSheet.create({
     height: 47,
     backgroundColor: "rgba(0,0,0,1)",
     marginTop: 31,
-    marginLeft: 35
+    marginLeft: 35,
+    alignItems: "center",
   }
 });
 

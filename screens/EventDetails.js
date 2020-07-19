@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   headerTxt: {
-    fontFamily: "opensans",
+    fontFamily: "Roboto",
     fontSize: 25,
     textAlign: 'center',
     marginTop: 20,
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
   },
   field: {
     fontWeight: '500',
-    fontFamily: 'opensans',
+    fontFamily: 'Roboto',
     fontSize: 17,
     color: 'black'
   },

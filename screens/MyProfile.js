@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Image, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Image, Text, TouchableOpacity, ScrollView, Alert } from "react-native";
 import Users from '../constants/User.js';
 
 class MyProfile extends React.Component {
@@ -32,6 +32,7 @@ class MyProfile extends React.Component {
   }
   render() {
     return (
+      <ScrollView>
       <View style={styles.container}>
         <Image
           source={{uri: this.user.avatar}}
@@ -55,10 +56,11 @@ class MyProfile extends React.Component {
         </View>
         <TouchableOpacity style={styles.button}
                     onPress={() => this.props.navigation.navigate('AddProducts')}>
-                      <Text>ADD ITEM</Text></TouchableOpacity>
+                      <Text style={{color: "white"}}>ADD ITEM</Text></TouchableOpacity>
         <TouchableOpacity style={styles.button1}
-                    onPress={this.clickLogout}><Text>LOGOUT</Text></TouchableOpacity>
+                    onPress={this.clickLogout}><Text style={{color: "white"}}>LOGOUT</Text></TouchableOpacity>
       </View>
+      </ScrollView>
     )
   };
 }
@@ -85,7 +87,7 @@ const styles = StyleSheet.create({
     color: "#121212",
     fontSize: 25,
     marginTop: -59,
-    marginLeft: 54
+    marginLeft: 70
   },
   group: {
     top: 0,
@@ -161,7 +163,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 0,
     marginTop: 44,
-    marginLeft: 54
+    marginLeft: 54,
+    // alignSelf: "center",
+    alignItems: "center",
   },
   button1: {
     width: 268,
@@ -176,7 +180,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 0,
     marginTop: 25,
-    marginLeft: 54
+    marginLeft: 54,
+    // alignSelf: "center",
+    alignItems: "center",
   }
 });
 

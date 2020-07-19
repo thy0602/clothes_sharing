@@ -120,7 +120,7 @@ class Home extends React.Component {
               color="#ffffff" 
               size={30} 
               style={{fontFamily: 'Roboto'}}>
-              Sharing Clothes
+              SE | AO
             </Text>
           </View>
         </ImageBackground>
@@ -247,19 +247,19 @@ const styles = StyleSheet.create({
     bottom: 120,
     right: 20,
   },
-  button: {
-    width: 60,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: "#a0a7fa"
-  },
-  buttonRow: {
-    width: 130, 
-    flexDirection: 'row', 
-    justifyContent: 'space-between',
-    alignSelf: 'center',
-    marginTop: 20
-  },
+  // button: {
+  //   width: 60,
+  //   height: 20,
+  //   borderRadius: 10,
+  //   backgroundColor: "#a0a7fa"
+  // },
+  // buttonRow: {
+  //   width: 130, 
+  //   flexDirection: 'row', 
+  //   justifyContent: 'space-between',
+  //   alignSelf: 'center',
+  //   marginTop: 20
+  // },
   cardImageRadius: {
     // borderRadius: width*0.8,
     width: width*0.9,
@@ -277,21 +277,21 @@ const styles = StyleSheet.create({
     // backgroundColor: 'blue'
   },
 
-  // buttonRow: {
-  //   width: 280, 
-  //   flexDirection: 'row', 
-  //   justifyContent: 'space-between',
-  //   alignSelf: 'center',
-  //   marginTop: 20,
-  //   alignItems: 'center',
-  //   marginBottom: 20
-  // }, 
-  // button: {
-  //   width: 100,
-  //   height: 30,
-  //   borderRadius: 10,
-  //   backgroundColor: "#a0a7fa"
-  // },
+  buttonRow: {
+    width: 280, 
+    flexDirection: 'row', 
+    justifyContent: 'space-between',
+    alignSelf: 'center',
+    marginTop: 20,
+    alignItems: 'center',
+    marginBottom: 20
+  }, 
+  button: {
+    width: 100,
+    height: 30,
+    borderRadius: 10,
+    backgroundColor: "#a0a7fa"
+  },
 
 });
 

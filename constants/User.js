@@ -18,6 +18,16 @@ let users = [
         address: '45 Nguyen Du',
         point: 50,
         avatar: "https://1.bp.blogspot.com/-v2-yOziMnsE/Xp7p_XIRlWI/AAAAAAAAiME/YgF-2I3anMoKr25hu7oEckUxch97_CdQwCLcBGAsYHQ/s1600/Hinh-Anh-Anime-Chibi-Girl%2B%25283%2529.jpg"
+    },
+    {
+        id: 3,
+        name: 'Phuong Trinh',
+        password: 'phuongtrinh',
+        phone: "0981555523",
+        email: 'phuongtrinh@gmail.com',
+        address: '30 Le Loi',
+        point: 60,
+        avatar: "https://thuthuatnhanh.com/wp-content/uploads/2019/09/anh-chibi.jpg"
     }
 ];
 
