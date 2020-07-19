@@ -1,9 +1,10 @@
 let Clothes = [
     {
+        id: 1,
         name: "Áo sơ mi nữ xanh",
         size: 'M',
-        height: "1m5 - 1m6",
-        weight: '50kg - 55kg',
+        height: "1m6",
+        weight: '55kg',
         usedTime: '2 years',
         price: '30,000 VND',
         available: 1,
@@ -13,13 +14,15 @@ let Clothes = [
             "shirt",
             "blue",
             "work",
-        ]
+        ],
+        main_color: "189.0|127.0|152.0"
     },
     {
+        id: 2,
         name: "Váy trắng",
         size: 'M',
-        height: "1m5 - 1m6",
-        weight: '50kg - 55kg',
+        height: "1m6",
+        weight: '55kg',
         usedTime: '2 years',
         price: '30,000 VND',
         available: 1,
@@ -29,7 +32,8 @@ let Clothes = [
             "skirt",
             "white",
             "short",
-        ]
+        ], 
+        main_color: "189.0|127.0|152.0"
     },
 ];
 

@@ -128,7 +128,7 @@ class Home extends React.Component {
         <ScrollView
           style={{ flex: 1, width: width}}>
             <Block style={styles.buttonRow}>
-              <Button style={styles.button} onPress={this.toMixAndMatch}>
+              <Button style={styles.button} onPress={this.toMixAndMatch} >
                 <Text bold size={12} color={"black"}>
                   Mix And Match
                 </Text>
