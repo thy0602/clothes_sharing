@@ -2,8 +2,8 @@ let Clothes = [
     {
         name: "Áo sơ mi nữ xanh",
         size: 'M',
-        height: "1m5 - 1m6",
-        weight: '50kg - 55kg',
+        height: "1m6",
+        weight: '55kg',
         usedTime: '2 years',
         price: '30,000 VND',
         available: 1,
@@ -18,8 +18,8 @@ let Clothes = [
     {
         name: "Váy trắng",
         size: 'M',
-        height: "1m5 - 1m6",
-        weight: '50kg - 55kg',
+        height: "1m6",
+        weight: '55kg',
         usedTime: '2 years',
         price: '30,000 VND',
         available: 1,
